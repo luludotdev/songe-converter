@@ -89,6 +89,8 @@ func run(dir string, flags CommandFlags, c chan Result) {
 			characteristic = "OneSaber"
 		} else if diff.Characteristic == "No Arrows" {
 			characteristic = "NoArrows"
+		} else if diff.Characteristic != "" {
+			characteristic = diff.Characteristic
 		} else {
 			characteristic = "Standard"
 		}
