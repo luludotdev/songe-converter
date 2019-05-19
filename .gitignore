@@ -2,6 +2,7 @@
 .vscode
 
 # Binaries
+build/
 *.exe
 
 # Test Folder
