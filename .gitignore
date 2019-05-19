@@ -1,2 +1,10 @@
+# VSCode
+.vscode
+
 # Binaries
 *.exe
+
+# Test Folder
+test/
+test2/
+testnew/
