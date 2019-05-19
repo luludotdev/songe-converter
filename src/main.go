@@ -1,20 +1,31 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path"
 	"strings"
 )
 
-func main() {
-	dir := os.Args[1]
-
+func run(dir string, flags CommandFlags, c chan Result) {
 	info := path.Join(dir, "info.json")
-	infoJSON := readInfo(info)
-	oldHash := calculateOldHash(infoJSON, dir)
-	fmt.Printf("OLD\t%v\n", oldHash)
+	infoJSON, infoErr := readInfo(info)
+	if infoErr != nil && os.IsNotExist(infoErr) {
+		log.Print("No info.json found in \"" + dir + "\", skipping!")
+
+		result := Result{dir: dir, oldHash: "", newHash: "", err: infoErr}
+		c <- result
+		return
+	} else if infoErr != nil {
+		log.Print("Something went wrong when converting \"" + dir + "\"")
+		log.Print(infoErr)
+
+		result := Result{dir: dir, oldHash: "", newHash: "", err: infoErr}
+		c <- result
+	} else {
+		log.Print("Converting \"" + dir + "\"")
+	}
 
 	var newInfoJSON NewInfoJSON
 	newInfoJSON.Version = "2.0.0"
@@ -47,7 +58,20 @@ func main() {
 	for _, diff := range infoJSON.DifficultyLevels {
 		// Read JSON
 		json := path.Join(dir, diff.JSONPath)
-		diffJSON := readDifficulty(json)
+		diffJSON, diffErr := readDifficulty(json)
+		if diffErr != nil && os.IsNotExist(diffErr) {
+			log.Print(diff.JSONPath + " not found in \"" + dir + "\", skipping!")
+
+			result := Result{dir: dir, oldHash: "", newHash: "", err: diffErr}
+			c <- result
+			return
+		} else if diffErr != nil {
+			log.Print("Something went wrong when reading \"" + json + "\"")
+			log.Print(diffErr)
+
+			result := Result{dir: dir, oldHash: "", newHash: "", err: diffErr}
+			c <- result
+		}
 
 		// New File Name
 		diffJSONFileName := strings.Replace(diff.JSONPath, ".json", ".dat", -1)
@@ -155,14 +179,28 @@ func main() {
 		diffJSONBytes, _ := JSONMarshal(newDiffJSON)
 		allBytes = append(allBytes, diffJSONBytes...)
 		diffJSONPath := path.Join(dir, diffJSONFileName)
-		_ = ioutil.WriteFile(diffJSONPath, diffJSONBytes, 0644)
+		if flags.dryRun == false {
+			_ = ioutil.WriteFile(diffJSONPath, diffJSONBytes, 0644)
+		}
 	}
 
 	infoJSONBytes, _ := JSONMarshal(newInfoJSON)
 	allBytes = append(allBytes, infoJSONBytes...)
 	infoJSONPath := path.Join(dir, "info.dat")
-	_ = ioutil.WriteFile(infoJSONPath, infoJSONBytes, 0644)
+	if flags.dryRun == false {
+		_ = ioutil.WriteFile(infoJSONPath, infoJSONBytes, 0644)
+	}
+
+	oldHash, err := calculateOldHash(infoJSON, dir)
+	if err != nil {
+		log.Print("Something went wrong when converting \"" + dir + "\"")
+		log.Print(err)
+
+		result := Result{dir: dir, oldHash: "", newHash: "", err: err}
+		c <- result
+	}
 
 	newHash := calculateHash(allBytes)
-	fmt.Printf("NEW\t%v\n", newHash)
+	result := Result{dir: dir, oldHash: oldHash, newHash: newHash, err: nil}
+	c <- result
 }

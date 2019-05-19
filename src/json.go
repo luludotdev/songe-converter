@@ -14,3 +14,9 @@ func JSONMarshal(t interface{}) ([]byte, error) {
 	err := encoder.Encode(t)
 	return buffer.Bytes(), err
 }
+
+// IsJSON Validate JSON Bytes
+func IsJSON(bytes []byte) bool {
+	var js json.RawMessage
+	return json.Unmarshal(bytes, &js) == nil
+}

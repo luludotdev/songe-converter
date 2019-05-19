@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"os"
 )
@@ -86,20 +87,25 @@ type Bookmark struct {
 	Name string `json:"_name"`
 }
 
-func readDifficulty(path string) OldDifficultyJSON {
+func readDifficulty(path string) (OldDifficultyJSON, error) {
 	jsonFile, err := os.Open(path)
-
 	if err != nil {
-		fatal(err)
+		return OldDifficultyJSON{}, err
 	}
 
 	defer jsonFile.Close()
-
 	bytes, _ := ioutil.ReadAll(jsonFile)
+
+	valid := IsJSON(bytes)
+	if valid == false {
+		invalidError := errors.New("Invalid difficulty file found at \"" + path + "\"")
+		return OldDifficultyJSON{}, invalidError
+	}
+
 	var diffJSON OldDifficultyJSON
 	json.Unmarshal(bytes, &diffJSON)
 
-	return diffJSON
+	return diffJSON, nil
 }
 
 func getRank(difficulty string) int {

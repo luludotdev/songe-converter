@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"os"
 )
@@ -41,18 +42,23 @@ type OldInfoJSON struct {
 	} `json:"difficultyLevels"`
 }
 
-func readInfo(path string) OldInfoJSON {
+func readInfo(path string) (OldInfoJSON, error) {
 	jsonFile, err := os.Open(path)
-
 	if err != nil {
-		fatal(err)
+		return OldInfoJSON{}, err
 	}
 
 	defer jsonFile.Close()
-
 	bytes, _ := ioutil.ReadAll(jsonFile)
+
+	valid := IsJSON(bytes)
+	if valid == false {
+		invalidError := errors.New("Invalid info.json")
+		return OldInfoJSON{}, invalidError
+	}
+
 	var infoJSON OldInfoJSON
 	json.Unmarshal(bytes, &infoJSON)
 
-	return infoJSON
+	return infoJSON, nil
 }

@@ -8,14 +8,14 @@ import (
 	"path"
 )
 
-func calculateOldHash(infoJSON OldInfoJSON, dir string) string {
+func calculateOldHash(infoJSON OldInfoJSON, dir string) (string, error) {
 	allBytes := make([]byte, 0)
 	for _, diff := range infoJSON.DifficultyLevels {
 		path := path.Join(dir, diff.JSONPath)
 		file, err := os.Open(path)
 
 		if err != nil {
-			fatal(err)
+			return "", err
 		}
 
 		defer file.Close()
@@ -23,7 +23,7 @@ func calculateOldHash(infoJSON OldInfoJSON, dir string) string {
 		allBytes = append(allBytes, bytes...)
 	}
 
-	return calculateHash(allBytes)
+	return calculateHash(allBytes), nil
 }
 
 func calculateHash(bytes []byte) string {
