@@ -37,7 +37,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 	newInfoJSON.SongAuthorName = infoJSON.AuthorName
 	newInfoJSON.LevelAuthorName = ""
 
-	newInfoJSON.Contributors = make([]Contributor, len(infoJSON.Contributors))
+	newInfoJSON.Contributors = make([]Contributor, 0)
 	for _, c := range infoJSON.Contributors {
 		contributor := Contributor{Role: c.Role, Name: c.Name, IconPath: c.IconPath}
 		newInfoJSON.Contributors = append(newInfoJSON.Contributors, contributor)
