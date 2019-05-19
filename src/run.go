@@ -54,10 +54,14 @@ func run(dir string, flags CommandFlags, c chan Result) {
 	newInfoJSON.CustomEnvironmentHash = infoJSON.CustomEnvironmentHash
 
 	allBytes := make([]byte, 0)
+	toDelete := make([]string, 0)
+
 	newInfoJSON.DifficultyBeatmapSets = make([]DifficultyBeatmapSet, 0)
 	for _, diff := range infoJSON.DifficultyLevels {
 		// Read JSON
 		json := path.Join(dir, diff.JSONPath)
+		toDelete = append(toDelete, json)
+
 		diffJSON, diffErr := readDifficulty(json)
 		if diffErr != nil && os.IsNotExist(diffErr) {
 			log.Print(diff.JSONPath + " not found in \"" + dir + "\", skipping!")
@@ -198,6 +202,20 @@ func run(dir string, flags CommandFlags, c chan Result) {
 
 		result := Result{dir: dir, oldHash: "", newHash: "", err: err}
 		c <- result
+	}
+
+	if flags.keepFiles == false && flags.dryRun == false {
+		err := os.Remove(info)
+		if err != nil {
+			log.Print("Failed to delete \"" + info + "\"")
+		}
+
+		for _, d := range toDelete {
+			err := os.Remove(d)
+			if err != nil {
+				log.Print("Failed to delete \"" + d + "\"")
+			}
+		}
 	}
 
 	newHash := calculateHash(allBytes)
