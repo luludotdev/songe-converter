@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"io/ioutil"
 	"log"
 	"os"
@@ -14,7 +15,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 	if infoErr != nil && os.IsNotExist(infoErr) {
 		log.Print("No info.json found in \"" + dir + "\", skipping!")
 
-		result := Result{dir: dir, oldHash: "", newHash: "", err: infoErr}
+		result := Result{dir: dir, oldHash: "", newHash: "", err: errors.New("info.json not found")}
 		c <- result
 		return
 	} else if infoErr != nil {
@@ -66,7 +67,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		if diffErr != nil && os.IsNotExist(diffErr) {
 			log.Print(diff.JSONPath + " not found in \"" + dir + "\", skipping!")
 
-			result := Result{dir: dir, oldHash: "", newHash: "", err: diffErr}
+			result := Result{dir: dir, oldHash: "", newHash: "", err: errors.New(diff.JSONPath + " not found")}
 			c <- result
 			return
 		} else if diffErr != nil {
