@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -15,7 +16,7 @@ func registerStringFlag(p *string, name string, alias string, def string, usage 
 
 func registerBoolFlag(p *bool, name string, alias string, def bool, usage string) {
 	flag.BoolVar(p, name, def, usage)
-	flag.BoolVar(p, alias, def, usage+" (short)")
+	flag.BoolVar(p, alias, def, usage+" (alias of -"+name+")")
 }
 
 func main() {
@@ -30,6 +31,13 @@ func main() {
 	registerBoolFlag(&allDirs, "all-dirs", "a", false, "run on all subfolders of given directory")
 	registerBoolFlag(&keepFiles, "keep-orig", "k", false, "do not delete original JSON files")
 	registerBoolFlag(&dryRun, "dry-run", "d", false, "don't modify filesystem, only log output")
+
+	if len(os.Args[1:]) == 0 {
+		fmt.Print("Songe Converter -- by lolPants\n\nflags:\n")
+		flag.PrintDefaults()
+		return
+	}
+
 	flag.Parse()
 
 	dirs := make([]string, 0)
