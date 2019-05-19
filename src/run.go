@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"sort"
 	"strings"
 )
 
@@ -191,6 +192,12 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		if flags.dryRun == false {
 			_ = ioutil.WriteFile(diffJSONPath, diffJSONBytes, 0644)
 		}
+	}
+
+	for _, set := range newInfoJSON.DifficultyBeatmapSets {
+		sort.Slice(set.DifficultyBeatmaps, func(i, j int) bool {
+			return set.DifficultyBeatmaps[i].DifficultyRank < set.DifficultyBeatmaps[j].DifficultyRank
+		})
 	}
 
 	infoJSONBytes, _ := JSONMarshal(newInfoJSON)
