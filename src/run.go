@@ -150,6 +150,10 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		newInfoJSON.ShufflePeriod = diffJSON.ShufflePeriod
 		newInfoJSON.SongFilename = diff.AudioPath
 
+		if diffJSON.BeatsPerMinute != 0 {
+			infoJSON.BeatsPerMinute = diffJSON.BeatsPerMinute
+		}
+
 		var newDiffJSON NewDifficultyJSON
 		newDiffJSON.Version = "2.0.0"
 

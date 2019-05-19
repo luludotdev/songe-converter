@@ -11,8 +11,8 @@ import (
 type OldDifficultyJSON struct {
 	Version string `json:"_version"`
 
-	BeatsPerMinute int `json:"_beatsPerMinute"`
-	BeatsPerBar    int `json:"_beatsPerBar"`
+	BeatsPerMinute float64 `json:"_beatsPerMinute"`
+	BeatsPerBar    int     `json:"_beatsPerBar"`
 
 	NoteJumpSpeed           float64 `json:"_noteJumpSpeed"`
 	NoteJumpStartBeatOffset int     `json:"_noteJumpStartBeatOffset"`
