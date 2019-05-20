@@ -11,6 +11,11 @@ import (
 )
 
 func run(dir string, flags CommandFlags, c chan Result) {
+	base := filepath.Base(dir)
+	if base == "info.json" {
+		dir = filepath.Dir(dir)
+	}
+
 	info := filepath.Join(dir, "info.json")
 	infoJSON, infoErr := readInfo(info)
 	if infoErr != nil && os.IsNotExist(infoErr) {
