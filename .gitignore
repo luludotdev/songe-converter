@@ -7,5 +7,6 @@ build/
 
 # Test Folder
 test/
-test2/
-testnew/
+
+# macOS Info
+.ds_store
