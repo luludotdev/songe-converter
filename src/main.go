@@ -25,15 +25,17 @@ func main() {
 		allDirs   bool
 		keepFiles bool
 		dryRun    bool
+		quiet     bool
 	)
 
 	registerStringFlag(&output, "output", "o", "", "save converted hashes and errors to file")
 	registerBoolFlag(&allDirs, "all-dirs", "a", false, "run on all subfolders of given directory")
 	registerBoolFlag(&keepFiles, "keep-orig", "k", false, "do not delete original JSON files")
 	registerBoolFlag(&dryRun, "dry-run", "d", false, "don't modify filesystem, only log output")
+	registerBoolFlag(&quiet, "quiet", "q", false, "don't print to stdout")
 
 	if len(os.Args[1:]) == 0 {
-		fmt.Print("Songe Converter -- by lolPants\n\nflags:\n")
+		fmt.Print("songe converter -- by lolPants\n\nflags:\n")
 		flag.PrintDefaults()
 		return
 	}
@@ -71,10 +73,10 @@ func main() {
 		dirs = flag.Args()
 	}
 
-	flags := CommandFlags{keepFiles, dryRun}
+	flags := CommandFlags{keepFiles, dryRun, quiet}
 	c := make(chan Result, len(dirs))
 
-	if flags.dryRun {
+	if flags.dryRun && !flags.quiet {
 		log.Print("WARNING: Performing a dry run!")
 	}
 
@@ -128,6 +130,7 @@ func main() {
 type CommandFlags struct {
 	keepFiles bool
 	dryRun    bool
+	quiet     bool
 }
 
 // Result Converted Hashes
