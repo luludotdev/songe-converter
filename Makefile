@@ -24,3 +24,6 @@ build-mac:
 clean:
 	$(GOCLEAN)
 	rm -rf $(OUTPUT)
+
+deps:
+	$(GOGET) github.com/bmatcuk/doublestar

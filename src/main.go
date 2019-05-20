@@ -7,6 +7,8 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/bmatcuk/doublestar"
 )
 
 func registerStringFlag(p *string, name string, alias string, def string, usage string) {
@@ -22,6 +24,7 @@ func registerBoolFlag(p *bool, name string, alias string, def bool, usage string
 func main() {
 	var (
 		output    string
+		glob      string
 		allDirs   bool
 		keepFiles bool
 		dryRun    bool
@@ -29,6 +32,7 @@ func main() {
 	)
 
 	registerStringFlag(&output, "output", "o", "", "save converted hashes and errors to file")
+	registerStringFlag(&glob, "glob", "g", "", "run a glob match in a given directory")
 	registerBoolFlag(&allDirs, "all-dirs", "a", false, "run on all subfolders of given directory")
 	registerBoolFlag(&keepFiles, "keep-orig", "k", false, "do not delete original JSON files")
 	registerBoolFlag(&dryRun, "dry-run", "d", false, "don't modify filesystem, only log output")
@@ -42,8 +46,12 @@ func main() {
 
 	flag.Parse()
 
+	if allDirs == true && glob != "" {
+		fatalStr("--all-dirs and --glob cannot be used together!")
+	}
+
 	dirs := make([]string, 0)
-	if allDirs == true {
+	if allDirs == true || glob != "" {
 		var dir string
 
 		args := flag.Args()
@@ -58,16 +66,27 @@ func main() {
 			dir = cwd
 		}
 
-		fileInfo, err := ioutil.ReadDir(dir)
-		if err != nil {
-			fatalStr("Could not list subdirectories of \"" + dir + "\"")
-		}
-
-		for _, file := range fileInfo {
-			if file.IsDir() {
-				subDir := filepath.Join(dir, file.Name())
-				dirs = append(dirs, subDir)
+		if allDirs == true {
+			fileInfo, err := ioutil.ReadDir(dir)
+			if err != nil {
+				fatalStr("Could not list subdirectories of \"" + dir + "\"")
 			}
+
+			for _, file := range fileInfo {
+				if file.IsDir() {
+					subDir := filepath.Join(dir, file.Name())
+					dirs = append(dirs, subDir)
+				}
+			}
+		} else if glob != "" {
+			pattern := filepath.Join(dir, glob)
+
+			paths, err := doublestar.Glob(pattern)
+			if err != nil {
+				fatalStr("Error matching glob path!")
+			}
+
+			dirs = paths
 		}
 	} else {
 		dirs = flag.Args()
