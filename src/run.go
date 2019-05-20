@@ -232,7 +232,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		}
 	}
 
-	newHash := calculateHash(allBytes)
+	newHash := calculateHashSHA1(allBytes)
 	result := Result{dir: dir, oldHash: oldHash, newHash: newHash, err: nil}
 	c <- result
 }
