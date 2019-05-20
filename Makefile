@@ -27,3 +27,4 @@ clean:
 
 deps:
 	$(GOGET) github.com/bmatcuk/doublestar
+	$(GOGET) github.com/TomOnTime/utfutil

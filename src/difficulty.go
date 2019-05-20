@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
-	"os"
+
+	"github.com/TomOnTime/utfutil"
 )
 
 // OldDifficultyJSON is the old beatmap difficulty file
@@ -88,13 +88,10 @@ type Bookmark struct {
 }
 
 func readDifficulty(path string) (OldDifficultyJSON, error) {
-	jsonFile, err := os.Open(path)
+	bytes, err := utfutil.ReadFile(path, utfutil.UTF8)
 	if err != nil {
 		return OldDifficultyJSON{}, err
 	}
-
-	defer jsonFile.Close()
-	bytes, _ := ioutil.ReadAll(jsonFile)
 
 	valid := IsJSON(bytes)
 	if valid == false {

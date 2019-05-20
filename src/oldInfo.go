@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
-	"os"
+
+	"github.com/TomOnTime/utfutil"
 )
 
 // OldInfoJSON is the old beatmap info file
@@ -43,13 +43,10 @@ type OldInfoJSON struct {
 }
 
 func readInfo(path string) (OldInfoJSON, error) {
-	jsonFile, err := os.Open(path)
+	bytes, err := utfutil.ReadFile(path, utfutil.UTF8)
 	if err != nil {
 		return OldInfoJSON{}, err
 	}
-
-	defer jsonFile.Close()
-	bytes, _ := ioutil.ReadAll(jsonFile)
 
 	valid := IsJSON(bytes)
 	if valid == false {
