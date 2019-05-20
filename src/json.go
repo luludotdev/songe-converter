@@ -10,6 +10,15 @@ func JSONMarshal(t interface{}) ([]byte, error) {
 	buffer := &bytes.Buffer{}
 	encoder := json.NewEncoder(buffer)
 	encoder.SetEscapeHTML(false)
+	err := encoder.Encode(t)
+	return buffer.Bytes(), err
+}
+
+// JSONMarshalPretty Properly Serialize JSON with Pretty Printing
+func JSONMarshalPretty(t interface{}) ([]byte, error) {
+	buffer := &bytes.Buffer{}
+	encoder := json.NewEncoder(buffer)
+	encoder.SetEscapeHTML(false)
 	encoder.SetIndent("", "  ")
 	err := encoder.Encode(t)
 	return buffer.Bytes(), err

@@ -202,7 +202,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		})
 	}
 
-	infoJSONBytes, _ := JSONMarshal(newInfoJSON)
+	infoJSONBytes, _ := JSONMarshalPretty(newInfoJSON)
 	allBytes = append(allBytes, infoJSONBytes...)
 	infoJSONPath := path.Join(dir, "info.dat")
 	if flags.dryRun == false {
