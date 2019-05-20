@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 )
 
 func registerStringFlag(p *string, name string, alias string, def string, usage string) {
@@ -63,7 +63,7 @@ func main() {
 
 		for _, file := range fileInfo {
 			if file.IsDir() {
-				subDir := path.Join(dir, file.Name())
+				subDir := filepath.Join(dir, file.Name())
 				dirs = append(dirs, subDir)
 			}
 		}

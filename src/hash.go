@@ -6,13 +6,13 @@ import (
 	"encoding/hex"
 	"io/ioutil"
 	"os"
-	"path"
+	"path/filepath"
 )
 
 func calculateOldHash(infoJSON OldInfoJSON, dir string) (string, error) {
 	allBytes := make([]byte, 0)
 	for _, diff := range infoJSON.DifficultyLevels {
-		path := path.Join(dir, diff.JSONPath)
+		path := filepath.Join(dir, diff.JSONPath)
 		file, err := os.Open(path)
 
 		if err != nil {

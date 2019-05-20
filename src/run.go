@@ -5,13 +5,13 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"sort"
 	"strings"
 )
 
 func run(dir string, flags CommandFlags, c chan Result) {
-	info := path.Join(dir, "info.json")
+	info := filepath.Join(dir, "info.json")
 	infoJSON, infoErr := readInfo(info)
 	if infoErr != nil && os.IsNotExist(infoErr) {
 		log.Print("No info.json found in \"" + dir + "\", skipping!")
@@ -61,7 +61,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 	newInfoJSON.DifficultyBeatmapSets = make([]DifficultyBeatmapSet, 0)
 	for _, diff := range infoJSON.DifficultyLevels {
 		// Read JSON
-		json := path.Join(dir, diff.JSONPath)
+		json := filepath.Join(dir, diff.JSONPath)
 		toDelete = append(toDelete, json)
 
 		diffJSON, diffErr := readDifficulty(json)
@@ -190,7 +190,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		// Save
 		diffJSONBytes, _ := JSONMarshal(newDiffJSON)
 		allBytes = append(allBytes, diffJSONBytes...)
-		diffJSONPath := path.Join(dir, diffJSONFileName)
+		diffJSONPath := filepath.Join(dir, diffJSONFileName)
 		if flags.dryRun == false {
 			_ = ioutil.WriteFile(diffJSONPath, diffJSONBytes, 0644)
 		}
@@ -204,7 +204,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 
 	infoJSONBytes, _ := JSONMarshalPretty(newInfoJSON)
 	allBytes = append(allBytes, infoJSONBytes...)
-	infoJSONPath := path.Join(dir, "info.dat")
+	infoJSONPath := filepath.Join(dir, "info.dat")
 	if flags.dryRun == false {
 		_ = ioutil.WriteFile(infoJSONPath, infoJSONBytes, 0644)
 	}
