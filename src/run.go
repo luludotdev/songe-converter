@@ -168,7 +168,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		newInfoJSON.SongFilename = diff.AudioPath
 
 		if diffJSON.BeatsPerMinute != 0 {
-			infoJSON.BeatsPerMinute = diffJSON.BeatsPerMinute
+			newInfoJSON.BeatsPerMinute = diffJSON.BeatsPerMinute
 		}
 
 		var newDiffJSON NewDifficultyJSON
