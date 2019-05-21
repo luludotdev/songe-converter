@@ -56,8 +56,8 @@ type DifficultyBeatmap struct {
 	EditorOffset    int `json:"_editorOffset"`
 	EditorOldOffset int `json:"_editorOldOffset"`
 
-	ColorLeft  *BeatmapColor `json:"_colorLeft"`
-	ColorRight *BeatmapColor `json:"_colorRight"`
+	ColorLeft  *BeatmapColor `json:"_colorLeft,omitempty"`
+	ColorRight *BeatmapColor `json:"_colorRight,omitempty"`
 
 	Warnings     []string `json:"_warnings"`
 	Information  []string `json:"_information"`
