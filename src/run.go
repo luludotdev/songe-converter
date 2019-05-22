@@ -159,9 +159,6 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		difficulty.ColorLeft = diffJSON.ColorLeft
 		difficulty.ColorRight = diffJSON.ColorRight
 
-		beatmapSet.DifficultyBeatmaps = append(beatmapSet.DifficultyBeatmaps, difficulty)
-		newInfoJSON.DifficultyBeatmapSets[beatmapSetIdx] = beatmapSet
-
 		newInfoJSON.Shuffle = diffJSON.Shuffle
 		newInfoJSON.ShufflePeriod = diffJSON.ShufflePeriod
 		newInfoJSON.SongFilename = diff.AudioPath
@@ -203,6 +200,8 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		// Save
 		diffJSONBytes, _ := JSONMarshal(newDiffJSON)
 		difficulty.Bytes = diffJSONBytes
+		beatmapSet.DifficultyBeatmaps = append(beatmapSet.DifficultyBeatmaps, difficulty)
+		newInfoJSON.DifficultyBeatmapSets[beatmapSetIdx] = beatmapSet
 
 		diffJSONPath := filepath.Join(dir, diffJSONFileName)
 		if flags.dryRun == false {
