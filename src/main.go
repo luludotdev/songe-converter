@@ -21,20 +21,27 @@ func registerBoolFlag(p *bool, name string, alias string, def bool, usage string
 	flag.BoolVar(p, alias, def, usage+" (alias of -"+name+")")
 }
 
+func registerIntFlag(p *int, name string, alias string, def int, usage string) {
+	flag.IntVar(p, name, def, usage)
+	flag.IntVar(p, alias, def, usage+" (alias of -"+name+")")
+}
+
 func main() {
 	var (
-		output    string
-		glob      string
-		allDirs   bool
-		keepFiles bool
-		dryRun    bool
-		quiet     bool
+		concurrency int
+		output      string
+		glob        string
+		allDirs     bool
+		keepFiles   bool
+		dryRun      bool
+		quiet       bool
 	)
 
-	registerStringFlag(&output, "output", "o", "", "save converted hashes and errors to file")
-	registerStringFlag(&glob, "glob", "g", "", "run a glob match in a given directory")
+	registerIntFlag(&concurrency, "concurrency", "c", 5, "max number of jobs allowed to run at a time")
 	registerBoolFlag(&allDirs, "all-dirs", "a", false, "run on all subfolders of given directory")
+	registerStringFlag(&glob, "glob", "g", "", "run a glob match in a given directory")
 	registerBoolFlag(&keepFiles, "keep-orig", "k", false, "do not delete original JSON files")
+	registerStringFlag(&output, "output", "o", "", "save converted hashes and errors to file")
 	registerBoolFlag(&dryRun, "dry-run", "d", false, "don't modify filesystem, only log output")
 	registerBoolFlag(&quiet, "quiet", "q", false, "don't print to stdout")
 
@@ -45,6 +52,10 @@ func main() {
 	}
 
 	flag.Parse()
+
+	if concurrency < 1 {
+		fatalStr("--concurrency cannot be less than 1")
+	}
 
 	if allDirs == true && glob != "" {
 		fatalStr("--all-dirs and --glob cannot be used together!")
@@ -99,8 +110,17 @@ func main() {
 		log.Print("WARNING: Performing a dry run!")
 	}
 
+	sem := make(chan bool, concurrency)
 	for _, dir := range dirs {
-		go run(dir, flags, c)
+		sem <- true
+		go func(dir string) {
+			defer func() { <-sem }()
+			run(dir, flags, c)
+		}(dir)
+	}
+
+	for i := 0; i < cap(sem); i++ {
+		sem <- true
 	}
 
 	results := make([]Result, 0)
