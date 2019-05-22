@@ -47,9 +47,9 @@ func run(dir string, flags CommandFlags, c chan Result) {
 	newInfoJSON.Version = "2.0.0"
 
 	newInfoJSON.SongName = infoJSON.SongName
-	newInfoJSON.SongSubName = infoJSON.SongSubName
+	newInfoJSON.SongSubName = ""
 	newInfoJSON.LevelAuthorName = infoJSON.AuthorName
-	newInfoJSON.SongAuthorName = ""
+	newInfoJSON.SongAuthorName = infoJSON.SongSubName
 
 	newInfoJSON.Contributors = make([]Contributor, 0)
 	for _, c := range infoJSON.Contributors {
