@@ -112,6 +112,7 @@ func main() {
 	if output != "" {
 		f, err := os.OpenFile(output, os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
+			f.Close()
 			fatal(err)
 		}
 
