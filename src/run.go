@@ -69,7 +69,6 @@ func run(dir string, flags CommandFlags, c chan Result) {
 	newInfoJSON.CustomEnvironment = infoJSON.CustomEnvironment
 	newInfoJSON.CustomEnvironmentHash = infoJSON.CustomEnvironmentHash
 
-	allBytes := make([]byte, 0)
 	toDelete := make([]string, 0)
 
 	newInfoJSON.DifficultyBeatmapSets = make([]DifficultyBeatmapSet, 0)
@@ -203,7 +202,8 @@ func run(dir string, flags CommandFlags, c chan Result) {
 
 		// Save
 		diffJSONBytes, _ := JSONMarshal(newDiffJSON)
-		allBytes = append(allBytes, diffJSONBytes...)
+		difficulty.Bytes = diffJSONBytes
+
 		diffJSONPath := filepath.Join(dir, diffJSONFileName)
 		if flags.dryRun == false {
 			_ = ioutil.WriteFile(diffJSONPath, diffJSONBytes, 0644)
@@ -216,8 +216,16 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		})
 	}
 
+	allBytes := make([]byte, 0)
 	infoJSONBytes, _ := JSONMarshalPretty(newInfoJSON)
+
 	allBytes = append(allBytes, infoJSONBytes...)
+	for _, set := range newInfoJSON.DifficultyBeatmapSets {
+		for _, d := range set.DifficultyBeatmaps {
+			allBytes = append(allBytes, d.Bytes...)
+		}
+	}
+
 	infoJSONPath := filepath.Join(dir, "info.dat")
 	if flags.dryRun == false {
 		_ = ioutil.WriteFile(infoJSONPath, infoJSONBytes, 0644)

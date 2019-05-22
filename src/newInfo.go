@@ -63,6 +63,8 @@ type DifficultyBeatmap struct {
 	Information  []string `json:"_information"`
 	Suggestions  []string `json:"_suggestions"`
 	Requirements []string `json:"_requirements"`
+
+	Bytes []byte `json:"-"`
 }
 
 // DifficultyBeatmapSet Set of DifficultyBeatmap structs
