@@ -13,13 +13,13 @@ BINARY_MAC=$(BINARY_NAME)-mac
 all: build-win build-linux build-mac
 
 build-win:
-	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GOBUILD) -o ./$(OUTPUT)/$(BINARY_WIN) -v ./src
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GOBUILD) -ldflags="-s -w" -o ./$(OUTPUT)/$(BINARY_WIN) -v ./src
 
 build-linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o ./$(OUTPUT)/$(BINARY_NAME) -v ./src
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -ldflags="-s -w" -o ./$(OUTPUT)/$(BINARY_NAME) -v ./src
 
 build-mac:
-	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) -o ./$(OUTPUT)/$(BINARY_MAC) -v ./src
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) -ldflags="-s -w" -o ./$(OUTPUT)/$(BINARY_MAC) -v ./src
 
 clean:
 	$(GOCLEAN)
