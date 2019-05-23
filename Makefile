@@ -6,11 +6,12 @@ GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 
 GIT_HASH=`git rev-parse HEAD`
+GIT_TAG=`git tag --points-at HEAD`
 OUTPUT=build
 BINARY_NAME=songe-converter
 BINARY_WIN=$(BINARY_NAME).exe
 BINARY_MAC=$(BINARY_NAME)-mac
-BUILD_FLAGS=-ldflags="-s -w -X main.sha1ver=$(GIT_HASH)"
+BUILD_FLAGS=-ldflags="-s -w -X main.sha1ver=$(GIT_HASH) -X main.gitTag=$(GIT_TAG)"
 
 all: build-win build-linux build-mac
 
@@ -26,6 +27,14 @@ build-mac:
 clean:
 	$(GOCLEAN)
 	rm -rf $(OUTPUT)
+
+release:
+	@read -p "Enter version: " version; \
+	git tag "v$$version" && \
+	git push && \
+	git push --tags && \
+	make clean && \
+	make
 
 deps:
 	$(GOGET) github.com/bmatcuk/doublestar

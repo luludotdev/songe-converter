@@ -11,7 +11,10 @@ import (
 	"github.com/bmatcuk/doublestar"
 )
 
-var sha1ver string
+var (
+	sha1ver string
+	gitTag  string
+)
 
 func registerStringFlag(p *string, name string, alias string, def string, usage string) {
 	flag.StringVar(p, name, def, usage)
@@ -50,7 +53,13 @@ func main() {
 	registerBoolFlag(&quiet, "quiet", "q", false, "don't print to stdout")
 
 	if len(os.Args[1:]) == 0 {
-		fmt.Print("songe converter -- by lolPants\n\nflags:\n")
+		if gitTag == "" {
+			fmt.Println("songe converter")
+		} else {
+			fmt.Println("songe converter " + gitTag)
+		}
+
+		fmt.Print("https://github.com/lolPants/songe-converter\n\nflags:\n")
 		flag.PrintDefaults()
 		return
 	}
@@ -60,6 +69,10 @@ func main() {
 	if printVersion == true {
 		if sha1ver == "" {
 			sha1ver = "unknown"
+		}
+
+		if gitTag != "" {
+			fmt.Println(gitTag)
 		}
 
 		fmt.Println(sha1ver)
