@@ -11,6 +11,8 @@ import (
 	"github.com/bmatcuk/doublestar"
 )
 
+var sha1ver string
+
 func registerStringFlag(p *string, name string, alias string, def string, usage string) {
 	flag.StringVar(p, name, def, usage)
 	flag.StringVar(p, alias, def, usage+" (short)")
@@ -28,15 +30,17 @@ func registerIntFlag(p *int, name string, alias string, def int, usage string) {
 
 func main() {
 	var (
-		concurrency int
-		output      string
-		glob        string
-		allDirs     bool
-		keepFiles   bool
-		dryRun      bool
-		quiet       bool
+		printVersion bool
+		concurrency  int
+		output       string
+		glob         string
+		allDirs      bool
+		keepFiles    bool
+		dryRun       bool
+		quiet        bool
 	)
 
+	registerBoolFlag(&printVersion, "version", "v", false, "print version information")
 	registerIntFlag(&concurrency, "concurrency", "c", 5, "max number of jobs allowed to run at a time")
 	registerBoolFlag(&allDirs, "all-dirs", "a", false, "run on all subfolders of given directory")
 	registerStringFlag(&glob, "glob", "g", "", "run a glob match in a given directory")
@@ -52,6 +56,15 @@ func main() {
 	}
 
 	flag.Parse()
+
+	if printVersion == true {
+		if sha1ver == "" {
+			sha1ver = "unknown"
+		}
+
+		fmt.Println(sha1ver)
+		return
+	}
 
 	if concurrency < 1 {
 		fatalStr("--concurrency cannot be less than 1")
