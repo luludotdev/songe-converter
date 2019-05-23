@@ -5,11 +5,12 @@ GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 
+GIT_HASH=`git rev-parse HEAD`
 OUTPUT=build
 BINARY_NAME=songe-converter
 BINARY_WIN=$(BINARY_NAME).exe
 BINARY_MAC=$(BINARY_NAME)-mac
-BUILD_FLAGS=-ldflags="-s -w"
+BUILD_FLAGS=-ldflags="-s -w -X main.sha1ver=$(GIT_HASH)"
 
 all: build-win build-linux build-mac
 
