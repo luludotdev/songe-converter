@@ -51,10 +51,10 @@ func run(dir string, flags CommandFlags, c chan Result) {
 	newInfoJSON.LevelAuthorName = infoJSON.AuthorName
 	newInfoJSON.SongAuthorName = infoJSON.SongSubName
 
-	newInfoJSON.Contributors = make([]Contributor, 0)
+	newInfoJSON.CustomData.Contributors = make([]Contributor, 0)
 	for _, c := range infoJSON.Contributors {
 		contributor := Contributor{Role: c.Role, Name: c.Name, IconPath: c.IconPath}
-		newInfoJSON.Contributors = append(newInfoJSON.Contributors, contributor)
+		newInfoJSON.CustomData.Contributors = append(newInfoJSON.CustomData.Contributors, contributor)
 	}
 
 	newInfoJSON.BeatsPerMinute = infoJSON.BeatsPerMinute
@@ -66,8 +66,8 @@ func run(dir string, flags CommandFlags, c chan Result) {
 	newInfoJSON.CoverImageFilename = infoJSON.CoverImagePath
 
 	newInfoJSON.EnvironmentName = infoJSON.EnvironmentName
-	newInfoJSON.CustomEnvironment = infoJSON.CustomEnvironment
-	newInfoJSON.CustomEnvironmentHash = infoJSON.CustomEnvironmentHash
+	newInfoJSON.CustomData.CustomEnvironment = infoJSON.CustomEnvironment
+	newInfoJSON.CustomData.CustomEnvironmentHash = infoJSON.CustomEnvironmentHash
 
 	toDelete := make([]string, 0)
 
@@ -129,35 +129,35 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		var difficulty DifficultyBeatmap
 		difficulty.Difficulty = diff.Difficulty
 		difficulty.DifficultyRank = getRank(diff.Difficulty)
-		difficulty.DifficultyLabel = diff.DifficultyLabel
+		difficulty.CustomData.DifficultyLabel = diff.DifficultyLabel
 		difficulty.BeatmapFilename = diffJSONFileName
 		difficulty.NoteJumpMovementSpeed = diffJSON.NoteJumpSpeed
 		difficulty.NoteJumpStartBeatOffset = diffJSON.NoteJumpStartBeatOffset
-		difficulty.EditorOffset = diff.Offset
-		difficulty.EditorOldOffset = diff.OldOffset
-		difficulty.Warnings = diffJSON.Warnings
-		difficulty.Information = diffJSON.Information
-		difficulty.Suggestions = diffJSON.Suggestions
-		difficulty.Requirements = diffJSON.Requirements
+		difficulty.CustomData.EditorOffset = diff.Offset
+		difficulty.CustomData.EditorOldOffset = diff.OldOffset
+		difficulty.CustomData.Warnings = diffJSON.Warnings
+		difficulty.CustomData.Information = diffJSON.Information
+		difficulty.CustomData.Suggestions = diffJSON.Suggestions
+		difficulty.CustomData.Requirements = diffJSON.Requirements
 
-		if difficulty.Warnings == nil {
-			difficulty.Warnings = make([]string, 0)
+		if difficulty.CustomData.Warnings == nil {
+			difficulty.CustomData.Warnings = make([]string, 0)
 		}
 
-		if difficulty.Information == nil {
-			difficulty.Information = make([]string, 0)
+		if difficulty.CustomData.Information == nil {
+			difficulty.CustomData.Information = make([]string, 0)
 		}
 
-		if difficulty.Suggestions == nil {
-			difficulty.Suggestions = make([]string, 0)
+		if difficulty.CustomData.Suggestions == nil {
+			difficulty.CustomData.Suggestions = make([]string, 0)
 		}
 
-		if difficulty.Requirements == nil {
-			difficulty.Requirements = make([]string, 0)
+		if difficulty.CustomData.Requirements == nil {
+			difficulty.CustomData.Requirements = make([]string, 0)
 		}
 
-		difficulty.ColorLeft = diffJSON.ColorLeft
-		difficulty.ColorRight = diffJSON.ColorRight
+		difficulty.CustomData.ColorLeft = diffJSON.ColorLeft
+		difficulty.CustomData.ColorRight = diffJSON.ColorRight
 
 		newInfoJSON.Shuffle = diffJSON.Shuffle
 		newInfoJSON.ShufflePeriod = diffJSON.ShufflePeriod

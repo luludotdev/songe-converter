@@ -9,8 +9,6 @@ type NewInfoJSON struct {
 	SongAuthorName  string `json:"_songAuthorName"`
 	LevelAuthorName string `json:"_levelAuthorName"`
 
-	Contributors []Contributor `json:"_contributors"`
-
 	BeatsPerMinute float64 `json:"_beatsPerMinute"`
 	SongTimeOffset float64 `json:"_songTimeOffset"`
 	Shuffle        float64 `json:"_shuffle"`
@@ -22,11 +20,19 @@ type NewInfoJSON struct {
 	SongFilename       string `json:"_songFilename"`
 	CoverImageFilename string `json:"_coverImageFilename"`
 
-	EnvironmentName       string `json:"_environmentName"`
-	CustomEnvironment     string `json:"_customEnvironment"`
-	CustomEnvironmentHash string `json:"_customEnvironmentHash"`
+	EnvironmentName string `json:"_environmentName"`
+
+	CustomData InfoCustomData `json:"_customData"`
 
 	DifficultyBeatmapSets []DifficultyBeatmapSet `json:"_difficultyBeatmapSets"`
+}
+
+// InfoCustomData Custom JSON Data for root info.json
+type InfoCustomData struct {
+	Contributors []Contributor `json:"_contributors"`
+
+	CustomEnvironment     string `json:"_customEnvironment"`
+	CustomEnvironmentHash string `json:"_customEnvironmentHash"`
 }
 
 // Contributor New Info JSON Contributors
@@ -47,11 +53,19 @@ type BeatmapColor struct {
 type DifficultyBeatmap struct {
 	Difficulty      string `json:"_difficulty"`
 	DifficultyRank  int    `json:"_difficultyRank"`
-	DifficultyLabel string `json:"_difficultyLabel"`
 	BeatmapFilename string `json:"_beatmapFilename"`
 
 	NoteJumpMovementSpeed   float64 `json:"_noteJumpMovementSpeed"`
 	NoteJumpStartBeatOffset int     `json:"_noteJumpStartBeatOffset"`
+
+	CustomData BeatmapCustomData `json:"_customData"`
+
+	Bytes []byte `json:"-"`
+}
+
+// BeatmapCustomData Custom JSON Data for a DifficultyBeatmap
+type BeatmapCustomData struct {
+	DifficultyLabel string `json:"_difficultyLabel"`
 
 	EditorOffset    int `json:"_editorOffset"`
 	EditorOldOffset int `json:"_editorOldOffset"`
@@ -63,8 +77,6 @@ type DifficultyBeatmap struct {
 	Information  []string `json:"_information"`
 	Suggestions  []string `json:"_suggestions"`
 	Requirements []string `json:"_requirements"`
-
-	Bytes []byte `json:"-"`
 }
 
 // DifficultyBeatmapSet Set of DifficultyBeatmap structs
