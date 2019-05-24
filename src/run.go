@@ -156,6 +156,12 @@ func run(dir string, flags CommandFlags, c chan Result) {
 			difficulty.CustomData.Requirements = make([]string, 0)
 		}
 
+		needsMapExt := checkForMapExt(&diffJSON)
+		hasMapExt := stringInSlice("Mapping Extensions", difficulty.CustomData.Requirements)
+		if needsMapExt == true && hasMapExt == false {
+			difficulty.CustomData.Requirements = append(difficulty.CustomData.Requirements, "Mapping Extensions")
+		}
+
 		difficulty.CustomData.ColorLeft = diffJSON.ColorLeft
 		difficulty.CustomData.ColorRight = diffJSON.ColorRight
 
