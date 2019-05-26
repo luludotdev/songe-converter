@@ -1,76 +1,53 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/bmatcuk/doublestar"
+	"github.com/ttacon/chalk"
 )
 
 var (
-	sha1ver string
+	sha1ver = "unknown"
 	gitTag  string
+
+	printVer  bool
+	printHelp bool
+
+	concurrency uint = 5
+	output           = ""
+	glob             = ""
+	allDirs          = false
+	keepFiles        = false
+	dryRun           = false
+	quiet            = false
+
+	args []string
 )
 
-func registerStringFlag(p *string, name string, alias string, def string, usage string) {
-	flag.StringVar(p, name, def, usage)
-	flag.StringVar(p, alias, def, usage+" (short)")
-}
-
-func registerBoolFlag(p *bool, name string, alias string, def bool, usage string) {
-	flag.BoolVar(p, name, def, usage)
-	flag.BoolVar(p, alias, def, usage+" (alias of -"+name+")")
-}
-
-func registerIntFlag(p *int, name string, alias string, def int, usage string) {
-	flag.IntVar(p, name, def, usage)
-	flag.IntVar(p, alias, def, usage+" (alias of -"+name+")")
-}
-
 func main() {
-	var (
-		printVersion bool
-		concurrency  int
-		output       string
-		glob         string
-		allDirs      bool
-		keepFiles    bool
-		dryRun       bool
-		quiet        bool
-	)
+	SetDetails("Songe Converter "+gitTag, "https://github.com/lolPants/songe-converter")
+	SetExample("./songe-converter -g '**/info.json' ./CustomSongs")
 
-	registerBoolFlag(&printVersion, "version", "v", false, "print version information")
-	registerIntFlag(&concurrency, "concurrency", "c", 5, "max number of jobs allowed to run at a time")
-	registerBoolFlag(&allDirs, "all-dirs", "a", false, "run on all subfolders of given directory")
-	registerStringFlag(&glob, "glob", "g", "", "run a glob match in a given directory")
-	registerBoolFlag(&keepFiles, "keep-orig", "k", false, "do not delete original JSON files")
-	registerStringFlag(&output, "output", "o", "", "save converted hashes and errors to file")
-	registerBoolFlag(&dryRun, "dry-run", "d", false, "don't modify filesystem, only log output")
-	registerBoolFlag(&quiet, "quiet", "q", false, "don't print to stdout")
+	RegisterBoolFlag(&printVer, "v", "version", "Print version information.")
+	RegisterUintFlag(&concurrency, "c", "concurrency", "Max number of jobs allowed to run at a time.")
+	RegisterStringFlag(&output, "o", "output", "Save converted hashes and errors to file.")
+	RegisterStringFlag(&glob, "g", "glob", "Use a glob to match directories.")
+	RegisterBoolFlag(&allDirs, "a", "all-dirs", "Run on all subfolders of given directory.")
+	RegisterBoolFlag(&keepFiles, "k", "keep-original", "Do not delete original JSON files")
+	RegisterBoolFlag(&dryRun, "d", "dry-run", "Do not modify filesystem, only log output.")
+	RegisterBoolFlag(&quiet, "q", "quiet", "Do not print to stdout.")
+	ParseFlags(&args)
 
 	if len(os.Args[1:]) == 0 {
-		if gitTag == "" {
-			fmt.Println("songe converter")
-		} else {
-			fmt.Println("songe converter " + gitTag)
-		}
-
-		fmt.Print("https://github.com/lolPants/songe-converter\n\nflags:\n")
-		flag.PrintDefaults()
+		PrintUsageAndExit()
 		return
 	}
 
-	flag.Parse()
-
-	if printVersion == true {
-		if sha1ver == "" {
-			sha1ver = "unknown"
-		}
-
+	if printVer == true {
 		if gitTag != "" {
 			fmt.Println(gitTag)
 		}
@@ -79,25 +56,30 @@ func main() {
 		return
 	}
 
+	if printHelp == true {
+		PrintUsageAndExit()
+		return
+	}
+
 	if concurrency < 1 {
-		fatalStr("--concurrency cannot be less than 1")
+		printError(chalk.Bold.TextStyle("--concurrency") + " cannot be less than 1!")
 	}
 
 	if allDirs == true && glob != "" {
-		fatalStr("--all-dirs and --glob cannot be used together!")
+		printError(chalk.Bold.TextStyle("--all-dirs") + " and " +
+			chalk.Bold.TextStyle("--glob") + " cannot be used together!")
 	}
 
 	dirs := make([]string, 0)
 	if allDirs == true || glob != "" {
 		var dir string
 
-		args := flag.Args()
 		if len(args) > 0 && args[0] != "" {
 			dir = args[0]
 		} else {
 			cwd, err := os.Getwd()
 			if err != nil {
-				fatal(err)
+				printError(err.Error())
 			}
 
 			dir = cwd
@@ -106,7 +88,7 @@ func main() {
 		if allDirs == true {
 			fileInfo, err := ioutil.ReadDir(dir)
 			if err != nil {
-				fatalStr("Could not list subdirectories of \"" + dir + "\"")
+				printError("Could not list subdirectories of \"" + dir + "\"")
 			}
 
 			for _, file := range fileInfo {
@@ -120,20 +102,20 @@ func main() {
 
 			paths, err := doublestar.Glob(pattern)
 			if err != nil {
-				fatalStr("Error matching glob path!")
+				printError("Error matching glob path!")
 			}
 
 			dirs = paths
 		}
 	} else {
-		dirs = flag.Args()
+		dirs = args
 	}
 
 	flags := CommandFlags{keepFiles, dryRun, quiet}
 	c := make(chan Result, len(dirs))
 
 	if flags.dryRun && !flags.quiet {
-		log.Print("WARNING: Performing a dry run!")
+		printWarning("Performing a dry run!")
 	}
 
 	sem := make(chan bool, concurrency)
@@ -159,7 +141,7 @@ func main() {
 		f, err := os.OpenFile(output, os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			f.Close()
-			fatal(err)
+			printError(err.Error())
 		}
 
 		defer f.Close()

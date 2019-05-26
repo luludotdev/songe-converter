@@ -39,3 +39,4 @@ release:
 deps:
 	$(GOGET) github.com/bmatcuk/doublestar
 	$(GOGET) github.com/TomOnTime/utfutil
+	$(GOGET) github.com/ttacon/chalk
