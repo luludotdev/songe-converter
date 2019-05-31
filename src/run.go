@@ -39,6 +39,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 
 		result := Result{dir: dir, oldHash: "", newHash: "", err: infoErr}
 		c <- result
+		return
 	} else {
 		logger("Converting \"" + dir + "\"")
 	}
@@ -90,6 +91,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 
 			result := Result{dir: dir, oldHash: "", newHash: "", err: diffErr}
 			c <- result
+			return
 		}
 
 		// New File Name
@@ -243,6 +245,7 @@ func run(dir string, flags CommandFlags, c chan Result) {
 
 		result := Result{dir: dir, oldHash: "", newHash: "", err: err}
 		c <- result
+		return
 	}
 
 	if flags.keepFiles == false && flags.dryRun == false {
