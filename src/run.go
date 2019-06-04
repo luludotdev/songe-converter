@@ -211,6 +211,15 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		}
 	}
 
+	if len(newInfoJSON.DifficultyBeatmapSets) == 0 {
+		logger("No difficulties were found in \"" + dir + "\", skipping...")
+		convertErr := errors.New("no difficulties were converted")
+
+		result := Result{dir: dir, oldHash: "", newHash: "", err: convertErr}
+		c <- result
+		return
+	}
+
 	for _, set := range newInfoJSON.DifficultyBeatmapSets {
 		sort.Slice(set.DifficultyBeatmaps, func(i, j int) bool {
 			return set.DifficultyBeatmaps[i].DifficultyRank < set.DifficultyBeatmaps[j].DifficultyRank
