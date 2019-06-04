@@ -80,18 +80,12 @@ func run(dir string, flags CommandFlags, c chan Result) {
 
 		diffJSON, diffErr := readDifficulty(json)
 		if diffErr != nil && os.IsNotExist(diffErr) {
-			logger(diff.JSONPath + " not found in \"" + dir + "\", skipping!")
-
-			result := Result{dir: dir, oldHash: "", newHash: "", err: errors.New(diff.JSONPath + " not found")}
-			c <- result
-			return
+			continue
 		} else if diffErr != nil {
 			logger("Something went wrong when reading \"" + json + "\"")
 			logger(diffErr)
 
-			result := Result{dir: dir, oldHash: "", newHash: "", err: diffErr}
-			c <- result
-			return
+			continue
 		}
 
 		// New File Name
