@@ -226,6 +226,25 @@ func run(dir string, flags CommandFlags, c chan Result) {
 		})
 	}
 
+	oldSongFilename := newInfoJSON.SongFilename
+	newInfoJSON.SongFilename = strings.Replace(newInfoJSON.SongFilename, ".ogg", ".egg", -1)
+
+	if oldSongFilename != newInfoJSON.SongFilename {
+		oldSongPath := filepath.Join(dir, oldSongFilename)
+		newSongPath := filepath.Join(dir, newInfoJSON.SongFilename)
+
+		if flags.dryRun == false && flags.keepFiles == true {
+			_, copyErr := copy(oldSongPath, newSongPath)
+			if copyErr != nil {
+				result := Result{dir: dir, oldHash: "", newHash: "", err: copyErr}
+				c <- result
+			}
+
+		} else if flags.dryRun == false && flags.keepFiles == false {
+			os.Rename(oldSongPath, newSongPath)
+		}
+	}
+
 	allBytes := make([]byte, 0)
 	infoJSONBytes, _ := JSONMarshalPretty(newInfoJSON)
 
