@@ -145,6 +145,7 @@ func main() {
 		}
 
 		defer f.Close()
+		f.Truncate(0)
 
 		f.WriteString("HASHES:\n")
 		for _, result := range results {
