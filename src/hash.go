@@ -17,7 +17,7 @@ func calculateOldHash(infoJSON OldInfoJSON, dir string) (string, error) {
 
 		if err != nil {
 			file.Close()
-			return "", err
+			continue
 		}
 
 		defer file.Close()
