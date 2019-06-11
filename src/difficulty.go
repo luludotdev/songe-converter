@@ -50,7 +50,7 @@ type NewDifficultyJSON struct {
 
 // BPMChange MM BPM Change
 type BPMChange struct {
-	BPM             int     `json:"_BPM"`
+	BPM             float64 `json:"_BPM"`
 	Time            float64 `json:"_time"`
 	BeatsPerBar     int     `json:"_beatsPerBar"`
 	MetronomeOffset int     `json:"_metronomeOffset"`
@@ -83,8 +83,8 @@ type Obstacle struct {
 
 // Bookmark MM Bookmark
 type Bookmark struct {
-	Time int    `json:"_time"`
-	Name string `json:"_name"`
+	Time float64 `json:"_time"`
+	Name string  `json:"_name"`
 }
 
 func readDifficulty(path string) (OldDifficultyJSON, error) {
