@@ -196,7 +196,7 @@ func main() {
 	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
 	s.Writer = os.Stderr
 	s.Suffix = " Converting songes..."
-	// s.Start()
+	s.Start()
 
 	<-complete
 	s.Stop()
