@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 
+	j "github.com/lolPants/songe-converter/json"
 	"github.com/lolPants/songe-converter/types"
-	"github.com/lolPants/songe-converter/utils"
 )
 
 // LoadNewInfo Loads new info struct from byte array
 func LoadNewInfo(bytes []byte) (*types.NewInfoJSON, error) {
-	valid := utils.IsJSON(bytes)
+	valid := json.Valid(bytes)
 	if valid == false {
 		return nil, errors.New("invalid info.dat")
 	}
@@ -26,7 +26,7 @@ func LoadNewInfo(bytes []byte) (*types.NewInfoJSON, error) {
 
 // LoadOldInfo Loads old info struct from byte array
 func LoadOldInfo(bytes []byte) (*types.OldInfoJSON, error) {
-	valid := utils.IsJSON(bytes)
+	valid := j.Valid(bytes)
 	if valid == false {
 		return nil, errors.New("invalid info.json")
 	}
@@ -42,7 +42,7 @@ func LoadOldInfo(bytes []byte) (*types.OldInfoJSON, error) {
 
 // LoadNewDifficulty Loads new difficulty struct from byte array
 func LoadNewDifficulty(bytes []byte) (*types.NewDifficultyJSON, error) {
-	valid := utils.IsJSON(bytes)
+	valid := j.Valid(bytes)
 	if valid == false {
 		return nil, errors.New("invalid difficulty.dat")
 	}
@@ -58,7 +58,7 @@ func LoadNewDifficulty(bytes []byte) (*types.NewDifficultyJSON, error) {
 
 // LoadOldDifficulty Loads old difficulty struct from byte array
 func LoadOldDifficulty(bytes []byte) (*types.OldDifficultyJSON, error) {
-	valid := utils.IsJSON(bytes)
+	valid := j.Valid(bytes)
 	if valid == false {
 		return nil, errors.New("invalid difficulty.json")
 	}
