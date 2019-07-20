@@ -8,21 +8,38 @@ GOGET=$(GOCMD) get
 GIT_HASH=`git rev-parse HEAD`
 GIT_TAG=`git tag --points-at HEAD`
 OUTPUT=build
-BINARY_NAME=songe-converter
-BINARY_WIN=$(BINARY_NAME).exe
-BINARY_MAC=$(BINARY_NAME)-mac
 BUILD_FLAGS=-ldflags="-s -w -X main.sha1ver=$(GIT_HASH) -X main.gitTag=$(GIT_TAG)"
 
-all: build-win build-linux build-mac
+SONGE_BINARY_NAME=songe-converter
+SONGE_BINARY_WIN=$(SONGE_BINARY_NAME).exe
+SONGE_BINARY_MAC=$(SONGE_BINARY_NAME)-mac
+SIMPLE_BINARY_NAME=simple-converter
+SIMPLE_BINARY_WIN=$(SIMPLE_BINARY_NAME).exe
+SIMPLE_BINARY_MAC=$(SIMPLE_BINARY_NAME)-mac
 
-build-win:
-	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(BINARY_WIN) -v ./src
+all: build-songe build-simple
+build-songe: build-songe-win build-songe-linux build-songe-mac
+build-simple: build-simple-win build-simple-linux build-simple-mac
 
-build-linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(BINARY_NAME) -v ./src
+# Build songe-converter
+build-songe-win:
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(SONGE_BINARY_WIN) -v ./cmd/songe-converter
 
-build-mac:
-	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(BINARY_MAC) -v ./src
+build-songe-linux:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(SONGE_BINARY_NAME) -v ./cmd/songe-converter
+
+build-songe-mac:
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(SONGE_BINARY_MAC) -v ./cmd/songe-converter
+
+# Build simple-converter
+build-simple-win:
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(SIMPLE_BINARY_WIN) -v ./cmd/simple-converter
+
+build-simple-linux:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(SIMPLE_BINARY_NAME) -v ./cmd/simple-converter
+
+build-simple-mac:
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(SIMPLE_BINARY_MAC) -v ./cmd/simple-converter
 
 clean:
 	$(GOCLEAN)
