@@ -1,9 +1,14 @@
 package converter
 
 import (
+	"errors"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 
+	"github.com/lolPants/songe-converter/directory"
 	"github.com/lolPants/songe-converter/types"
 	"github.com/lolPants/songe-converter/utils"
 )
@@ -182,4 +187,98 @@ func OldToNew(old *types.OldInfoJSON) (*types.NewInfoJSON, error) {
 
 	new.Hash = utils.CalculateSHA1(allBytes)
 	return &new, nil
+}
+
+// DirOldToNew converts an old directory into a new directory
+func DirOldToNew(dir string, dryRun bool, keepFiles bool) Result {
+	r := Result{Directory: dir}
+
+	base := filepath.Base(dir)
+	if base == "info.json" {
+		dir = filepath.Dir(dir)
+	}
+
+	dirType, _ := directory.ReadType(dir)
+	if dirType != directory.Old {
+		r.Error = errors.New("\"" + dir + "\" does not contain an old format beatmap")
+		return r
+	}
+
+	old, err := ReadDirectoryOld(dir)
+	if err != nil {
+		r.Error = errors.New("could not load beatmap at \"" + dir + "\"")
+		return r
+	}
+
+	new, err := OldToNew(old)
+	if err != nil {
+		r.Error = errors.New("failed to convert beatmap at \"" + dir + "\"")
+		return r
+	}
+
+	r.OldHash = old.Hash
+	r.NewHash = new.Hash
+
+	if dryRun == false {
+		newPath := filepath.Join(dir, "info.dat")
+		newBytes, err := new.Bytes()
+		if err != nil {
+			r.Error = errors.New("could not serialize \"" + newPath + "\"")
+			return r
+		}
+
+		ioutil.WriteFile(newPath, newBytes, 0644)
+		if keepFiles == false {
+			infoPath := filepath.Join(dir, "info.json")
+			err := os.Remove(infoPath)
+
+			if err != nil {
+				r.Error = errors.New("could not delete \"" + infoPath + "\"")
+				return r
+			}
+		}
+
+		oldAudioPath := filepath.Join(dir, new.OldSongFilename)
+		newAudioPath := filepath.Join(dir, new.SongFilename)
+
+		audioChanged := oldAudioPath != newAudioPath
+		if audioChanged == true && keepFiles == true {
+			_, err := utils.CopyFile(oldAudioPath, newAudioPath)
+			if err != nil {
+				r.Error = errors.New("could not copy \"" + oldAudioPath + "\"")
+				return r
+			}
+		} else if audioChanged == true && keepFiles == false {
+			err := os.Rename(oldAudioPath, newAudioPath)
+			if err != nil {
+				r.Error = errors.New("could not rename \"" + oldAudioPath + "\"")
+				return r
+			}
+		}
+
+		for _, set := range new.DifficultyBeatmapSets {
+			for _, diff := range set.DifficultyBeatmaps {
+				diffPath := filepath.Join(dir, diff.BeatmapFilename)
+				diffBytes, err := new.Bytes()
+				if err != nil {
+					r.Error = errors.New("could not serialize \"" + diffPath + "\"")
+					return r
+				}
+
+				ioutil.WriteFile(diffPath, diffBytes, 0644)
+				if keepFiles == false {
+					oldDiffName := strings.Replace(diff.BeatmapFilename, ".dat", ".json", -1)
+					oldDiffPath := filepath.Join(dir, oldDiffName)
+					err := os.Remove(oldDiffPath)
+
+					if err != nil {
+						r.Error = errors.New("could not delete \"" + oldDiffPath + "\"")
+						return r
+					}
+				}
+			}
+		}
+	}
+
+	return r
 }

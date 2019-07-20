@@ -10,6 +10,7 @@ import (
 
 	"github.com/bmatcuk/doublestar"
 	"github.com/briandowns/spinner"
+	"github.com/lolPants/songe-converter/converter"
 	"github.com/lolPants/songe-converter/flags"
 	"github.com/lolPants/songe-converter/log"
 	"github.com/lolPants/songe-converter/utils"
@@ -121,7 +122,7 @@ func main() {
 		log.Warning("Performing a dry run!")
 	}
 
-	c := make(chan result, len(dirs))
+	c := make(chan converter.Result, len(dirs))
 	complete := make(chan bool, 1)
 
 	fout, err := utils.OpenFileSafe(output)
@@ -154,16 +155,16 @@ func main() {
 		for i := 0; i < len(dirs); i++ {
 			r := <-c
 
-			if r.err == nil {
+			if r.Error == nil {
 				if fout == nil {
 					continue
 				}
 
-				fout.WriteString(r.oldHash)
+				fout.WriteString(r.OldHash)
 				fout.WriteString("\t")
-				fout.WriteString(r.newHash)
+				fout.WriteString(r.NewHash)
 				fout.WriteString("\t")
-				fout.WriteString(r.dir)
+				fout.WriteString(r.Directory)
 				fout.WriteString("\n")
 
 				fout.Sync()
@@ -172,9 +173,9 @@ func main() {
 					continue
 				}
 
-				ferr.WriteString(r.err.Error())
+				ferr.WriteString(r.Error.Error())
 				ferr.WriteString("\t")
-				ferr.WriteString(r.dir)
+				ferr.WriteString(r.Directory)
 				ferr.WriteString("\n")
 
 				ferr.Sync()
@@ -189,7 +190,9 @@ func main() {
 		sem <- true
 		go func(dir string) {
 			defer func() { <-sem }()
-			convert(dir, c)
+
+			result := converter.DirOldToNew(dir, dryRun, keepFiles)
+			c <- result
 		}(dir)
 	}
 
