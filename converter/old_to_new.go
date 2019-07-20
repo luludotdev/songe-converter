@@ -158,6 +158,7 @@ func OldToNew(old *types.OldInfoJSON) (*types.NewInfoJSON, error) {
 		})
 	}
 
+	new.OldSongFilename = new.SongFilename
 	new.SongFilename = strings.Replace(new.SongFilename, ".ogg", ".egg", -1)
 
 	allBytes := make([]byte, 0)

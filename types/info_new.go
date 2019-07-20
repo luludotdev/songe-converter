@@ -19,6 +19,7 @@ type NewInfoJSON struct {
 	PreviewStartTime float64 `json:"_previewStartTime"`
 	PreviewDuration  float64 `json:"_previewDuration"`
 
+	OldSongFilename    string `json:"-"`
 	SongFilename       string `json:"_songFilename"`
 	CoverImageFilename string `json:"_coverImageFilename"`
 

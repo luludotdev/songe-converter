@@ -6,7 +6,8 @@ import (
 
 // OldInfoJSON is the old beatmap info file
 type OldInfoJSON struct {
-	Hash string `json:"-"`
+	Hash            string `json:"-"`
+	NewSongFilename string `json:"-"`
 
 	SongName    string `json:"songName"`
 	SongSubName string `json:"songSubName"`
