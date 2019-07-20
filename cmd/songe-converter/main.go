@@ -124,36 +124,31 @@ func main() {
 	c := make(chan result, len(dirs))
 	complete := make(chan bool, 1)
 
-	var fout *os.File
-	var ferr *os.File
-
-	if output != "" {
-		fout, err := utils.OpenFileSafe(output)
-		if err != nil {
-			log.Error(err.Error())
-			if fout != nil {
-				fout.Close()
-			}
+	fout, err := utils.OpenFileSafe(output)
+	if err != nil && output != "" {
+		if fout != nil {
+			fout.Close()
 		}
 
-		defer fout.Close()
-		fout.Truncate(0)
-		fout.Seek(0, 0)
+		log.Error("failed to open output file")
 	}
 
-	if outputErr != "" {
-		ferr, err := utils.OpenFileSafe(outputErr)
-		if err != nil {
-			log.Error(err.Error())
-			if ferr != nil {
-				ferr.Close()
-			}
+	defer fout.Close()
+	fout.Truncate(0)
+	fout.Seek(0, 0)
+
+	ferr, err := utils.OpenFileSafe(outputErr)
+	if err != nil && outputErr != "" {
+		if ferr != nil {
+			ferr.Close()
 		}
 
-		defer ferr.Close()
-		ferr.Truncate(0)
-		ferr.Seek(0, 0)
+		log.Error("failed to open error file")
 	}
+
+	defer ferr.Close()
+	ferr.Truncate(0)
+	ferr.Seek(0, 0)
 
 	go func() {
 		for i := 0; i < len(dirs); i++ {
