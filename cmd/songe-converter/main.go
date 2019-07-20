@@ -159,11 +159,11 @@ func main() {
 		for i := 0; i < len(dirs); i++ {
 			r := <-c
 
-			if fout == nil || ferr == nil {
-				continue
-			}
-
 			if r.err == nil {
+				if fout == nil {
+					continue
+				}
+
 				fout.WriteString(r.oldHash)
 				fout.WriteString("\t")
 				fout.WriteString(r.newHash)
@@ -173,6 +173,10 @@ func main() {
 
 				fout.Sync()
 			} else {
+				if ferr == nil {
+					continue
+				}
+
 				ferr.WriteString(r.err.Error())
 				ferr.WriteString("\t")
 				ferr.WriteString(r.dir)
@@ -197,7 +201,7 @@ func main() {
 	s := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
 	s.Writer = os.Stderr
 	s.Suffix = " Converting songes..."
-	s.Start()
+	// s.Start()
 
 	<-complete
 	s.Stop()
