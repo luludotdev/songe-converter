@@ -13,11 +13,7 @@ type OldInfoJSON struct {
 	SongSubName string `json:"songSubName"`
 	AuthorName  string `json:"authorName"`
 
-	Contributors []struct {
-		Role     string `json:"role"`
-		Name     string `json:"name"`
-		IconPath string `json:"iconPath"`
-	} `json:"contributors"`
+	Contributors []OldContributor `json:"contributors"`
 
 	BeatsPerMinute        float64 `json:"beatsPerMinute"`
 	PreviewStartTime      float64 `json:"previewStartTime"`
@@ -28,23 +24,33 @@ type OldInfoJSON struct {
 	CustomEnvironment     string  `json:"customEnvironment"`
 	CustomEnvironmentHash string  `json:"customEnvironmentHash"`
 
-	DifficultyLevels []struct {
-		Difficulty      string `json:"difficulty"`
-		DifficultyRank  int    `json:"difficultyRank"`
-		AudioPath       string `json:"audioPath"`
-		JSONPath        string `json:"jsonPath"`
-		Offset          int    `json:"offset"`
-		OldOffset       int    `json:"oldOffset"`
-		ChromaToggle    string `json:"chromaToggle"`
-		CustomColors    bool   `json:"customColors"`
-		Characteristic  string `json:"characteristic"`
-		DifficultyLabel string `json:"difficultyLabel"`
-
-		DiffJSON *OldDifficultyJSON `json:"-"`
-	} `json:"difficultyLevels"`
+	DifficultyLevels []DifficultyLevel `json:"difficultyLevels"`
 }
 
 // Bytes Convert to byte array
 func (i OldInfoJSON) Bytes() ([]byte, error) {
 	return json.MarshalPretty(i)
+}
+
+// OldContributor Old contributor info
+type OldContributor struct {
+	Role     string `json:"role"`
+	Name     string `json:"name"`
+	IconPath string `json:"iconPath"`
+}
+
+// DifficultyLevel Old difficulty level
+type DifficultyLevel struct {
+	Difficulty      string `json:"difficulty"`
+	DifficultyRank  int    `json:"difficultyRank"`
+	AudioPath       string `json:"audioPath"`
+	JSONPath        string `json:"jsonPath"`
+	Offset          int    `json:"offset"`
+	OldOffset       int    `json:"oldOffset"`
+	ChromaToggle    string `json:"chromaToggle"`
+	CustomColors    bool   `json:"customColors"`
+	Characteristic  string `json:"characteristic"`
+	DifficultyLabel string `json:"difficultyLabel"`
+
+	DiffJSON *OldDifficultyJSON `json:"-"`
 }
