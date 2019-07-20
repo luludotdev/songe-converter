@@ -1,9 +1,6 @@
 package main
 
 import (
-	"crypto/md5"
-	"crypto/sha1"
-	"encoding/hex"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -26,14 +23,4 @@ func calculateOldHash(infoJSON OldInfoJSON, dir string) (string, error) {
 	}
 
 	return calculateHashMD5(allBytes), nil
-}
-
-func calculateHashMD5(bytes []byte) string {
-	sum := md5.Sum(bytes)
-	return hex.EncodeToString(sum[:])
-}
-
-func calculateHashSHA1(bytes []byte) string {
-	sum := sha1.Sum(bytes)
-	return hex.EncodeToString(sum[:])
 }

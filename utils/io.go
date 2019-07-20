@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"fmt"
@@ -6,7 +6,8 @@ import (
 	"os"
 )
 
-func copy(src, dst string) (int64, error) {
+// CopyFile safely copy a file
+func CopyFile(src, dst string) (int64, error) {
 	sourceFileStat, err := os.Stat(src)
 	if err != nil {
 		return 0, err

@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"fmt"
@@ -7,11 +7,13 @@ import (
 	"github.com/ttacon/chalk"
 )
 
-func printError(msg string) {
+// Error prints error string and exits
+func Error(msg string) {
 	fmt.Println(chalk.Red.Color("[ERROR]") + " " + msg)
 	os.Exit(1)
 }
 
-func printWarning(msg string) {
+// Warning prints warning string
+func Warning(msg string) {
 	fmt.Println(chalk.Yellow.Color("[WARNING]") + " " + msg)
 }
