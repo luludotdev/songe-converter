@@ -1,5 +1,7 @@
 package types
 
+import "github.com/lolPants/songe-converter/json"
+
 // NewInfoJSON New Info JSON
 type NewInfoJSON struct {
 	Version string `json:"_version"`
@@ -85,4 +87,9 @@ type BeatmapCustomData struct {
 type DifficultyBeatmapSet struct {
 	BeatmapCharacteristicName string              `json:"_beatmapCharacteristicName"`
 	DifficultyBeatmaps        []DifficultyBeatmap `json:"_difficultyBeatmaps"`
+}
+
+// Bytes Convert to byte array
+func (i NewInfoJSON) Bytes() ([]byte, error) {
+	return json.MarshalPretty(i)
 }

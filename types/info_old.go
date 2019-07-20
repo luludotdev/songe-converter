@@ -1,5 +1,9 @@
 package types
 
+import (
+	"github.com/lolPants/songe-converter/json"
+)
+
 // OldInfoJSON is the old beatmap info file
 type OldInfoJSON struct {
 	Hash string `json:"-"`
@@ -37,4 +41,9 @@ type OldInfoJSON struct {
 
 		DiffJSON *OldDifficultyJSON `json:"-"`
 	} `json:"difficultyLevels"`
+}
+
+// Bytes Convert to byte array
+func (i OldInfoJSON) Bytes() ([]byte, error) {
+	return json.MarshalPretty(i)
 }

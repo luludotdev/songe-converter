@@ -1,5 +1,7 @@
 package types
 
+import "github.com/lolPants/songe-converter/json"
+
 // OldDifficultyJSON is the old beatmap difficulty file
 type OldDifficultyJSON struct {
 	Version string `json:"_version"`
@@ -28,4 +30,9 @@ type OldDifficultyJSON struct {
 	Notes      []Note      `json:"_notes"`
 	Obstacles  []Obstacle  `json:"_obstacles"`
 	Bookmarks  []Bookmark  `json:"_bookmarks"`
+}
+
+// Bytes Convert to byte array
+func (i OldDifficultyJSON) Bytes() ([]byte, error) {
+	return json.Marshal(i)
 }
