@@ -5,14 +5,15 @@ import (
 	"path/filepath"
 
 	"github.com/TomOnTime/utfutil"
+	"github.com/lolPants/songe-converter/directory"
 	"github.com/lolPants/songe-converter/types"
 	"github.com/lolPants/songe-converter/utils"
 )
 
 // ReadDirectoryNew Reads a directory and loads new beatmap format
 func ReadDirectoryNew(path string) (*types.NewInfoJSON, error) {
-	dirType, _ := BeatmapDirectoryType(path)
-	if dirType != New {
+	dirType, _ := directory.ReadType(path)
+	if dirType != directory.New {
 		return nil, errors.New("not a new format beatmap")
 	}
 
@@ -54,8 +55,8 @@ func ReadDirectoryNew(path string) (*types.NewInfoJSON, error) {
 
 // ReadDirectoryOld Reads a directory and loads old beatmap format
 func ReadDirectoryOld(path string) (*types.OldInfoJSON, error) {
-	dirType, _ := BeatmapDirectoryType(path)
-	if dirType != Old {
+	dirType, _ := directory.ReadType(path)
+	if dirType != directory.Old {
 		return nil, errors.New("not an old format beatmap")
 	}
 

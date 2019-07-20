@@ -1,4 +1,4 @@
-package converter
+package directory
 
 import (
 	"errors"
@@ -7,8 +7,8 @@ import (
 	"github.com/lolPants/songe-converter/utils"
 )
 
-// BeatmapDirectoryType reads a directory and returns its type
-func BeatmapDirectoryType(path string) (DirectoryType, error) {
+// ReadType reads a directory and returns its type
+func ReadType(path string) (Type, error) {
 	exists, err := utils.DirectoryExists(path)
 	if err != nil {
 		return None, err
