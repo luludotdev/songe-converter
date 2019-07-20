@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 )
 
 // CopyFile safely copy a file
@@ -76,4 +77,15 @@ func DirectoryExists(path string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+// OpenFileSafe creates all nested directories then opens the file
+func OpenFileSafe(path string) (*os.File, error) {
+	dir := filepath.Dir(path)
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		return nil, err
+	}
+
+	return os.OpenFile(path, os.O_CREATE|os.O_WRONLY, 0644)
 }
