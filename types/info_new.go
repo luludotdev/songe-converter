@@ -25,6 +25,8 @@ type NewInfoJSON struct {
 	CustomData InfoCustomData `json:"_customData"`
 
 	DifficultyBeatmapSets []DifficultyBeatmapSet `json:"_difficultyBeatmapSets"`
+
+	Hash string `json:"-"`
 }
 
 // InfoCustomData Custom JSON Data for root info.json
@@ -60,7 +62,7 @@ type DifficultyBeatmap struct {
 
 	CustomData BeatmapCustomData `json:"_customData"`
 
-	Bytes []byte `json:"-"`
+	DiffJSON *NewDifficultyJSON `json:"-"`
 }
 
 // BeatmapCustomData Custom JSON Data for a DifficultyBeatmap

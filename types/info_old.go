@@ -2,6 +2,8 @@ package types
 
 // OldInfoJSON is the old beatmap info file
 type OldInfoJSON struct {
+	Hash string `json:"-"`
+
 	SongName    string `json:"songName"`
 	SongSubName string `json:"songSubName"`
 	AuthorName  string `json:"authorName"`
@@ -32,5 +34,7 @@ type OldInfoJSON struct {
 		CustomColors    bool   `json:"customColors"`
 		Characteristic  string `json:"characteristic"`
 		DifficultyLabel string `json:"difficultyLabel"`
+
+		DiffJSON *OldDifficultyJSON `json:"-"`
 	} `json:"difficultyLevels"`
 }
