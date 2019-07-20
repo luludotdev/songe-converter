@@ -1,12 +1,12 @@
-package utils
+package json
 
 import (
 	"bytes"
 	"encoding/json"
 )
 
-// JSONMarshal Properly Serialize JSON
-func JSONMarshal(t interface{}) ([]byte, error) {
+// Marshal Properly Serialize JSON
+func Marshal(t interface{}) ([]byte, error) {
 	buffer := &bytes.Buffer{}
 
 	encoder := json.NewEncoder(buffer)
@@ -16,8 +16,8 @@ func JSONMarshal(t interface{}) ([]byte, error) {
 	return buffer.Bytes(), err
 }
 
-// JSONMarshalPretty Properly Serialize JSON with Pretty Printing
-func JSONMarshalPretty(t interface{}) ([]byte, error) {
+// MarshalPretty Properly Serialize JSON with Pretty Printing
+func MarshalPretty(t interface{}) ([]byte, error) {
 	buffer := &bytes.Buffer{}
 
 	encoder := json.NewEncoder(buffer)
@@ -28,8 +28,8 @@ func JSONMarshalPretty(t interface{}) ([]byte, error) {
 	return buffer.Bytes(), err
 }
 
-// IsJSON Validate JSON Bytes
-func IsJSON(bytes []byte) bool {
+// Valid Validate JSON Bytes
+func Valid(bytes []byte) bool {
 	var js json.RawMessage
 	return json.Unmarshal(bytes, &js) == nil
 }
