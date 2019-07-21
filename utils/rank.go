@@ -37,3 +37,22 @@ func GetDifficultyString(rank int) string {
 		return "Easy"
 	}
 }
+
+// GetOldDifficultyRank get old difficulty rank number from new rank
+func GetOldDifficultyRank(rank int) int {
+	switch rank {
+	case 1:
+		return 0
+	case 3:
+		return 1
+	case 5:
+		return 2
+	case 7:
+		return 3
+	case 9:
+		return 4
+
+	default:
+		return 1
+	}
+}

@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/lolPants/songe-converter/converter"
-
 	"github.com/lolPants/songe-converter/directory"
 	"github.com/otiai10/copy"
 )
@@ -49,6 +48,8 @@ func main() {
 
 	if dirType == directory.Old {
 		converter.DirOldToNew(dir, false, false)
+	} else if dirType == directory.New {
+		converter.DirNewToOld(dir, false, false)
 	}
 
 	fmt.Println("Conversion complete!")
