@@ -259,7 +259,7 @@ func DirOldToNew(dir string, dryRun bool, keepFiles bool) Result {
 		for _, set := range new.DifficultyBeatmapSets {
 			for _, diff := range set.DifficultyBeatmaps {
 				diffPath := filepath.Join(dir, diff.BeatmapFilename)
-				diffBytes, err := new.Bytes()
+				diffBytes, err := diff.DiffJSON.Bytes()
 				if err != nil {
 					r.Error = errors.New("could not serialize \"" + diffPath + "\"")
 					return r
