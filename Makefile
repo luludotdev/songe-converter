@@ -16,10 +16,14 @@ SONGE_BINARY_MAC=$(SONGE_BINARY_NAME)-mac
 SIMPLE_BINARY_NAME=simple-converter
 SIMPLE_BINARY_WIN=$(SIMPLE_BINARY_NAME).exe
 SIMPLE_BINARY_MAC=$(SIMPLE_BINARY_NAME)-mac
+SYNCER_BINARY_NAME=songe-syncer
+SYNCER_BINARY_WIN=$(SYNCER_BINARY_NAME).exe
+SYNCER_BINARY_MAC=$(SYNCER_BINARY_NAME)-mac
 
-all: build-songe build-simple
+all: build-songe build-simple build-syncer
 build-songe: build-songe-win build-songe-linux build-songe-mac
 build-simple: build-simple-win build-simple-linux build-simple-mac
+build-syncer: build-syncer-win build-syncer-linux build-syncer-mac
 
 # Build songe-converter
 build-songe-win:
@@ -41,6 +45,16 @@ build-simple-linux:
 build-simple-mac:
 	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(SIMPLE_BINARY_MAC) -v ./cmd/simple-converter
 
+# Build songe-syncer
+build-syncer-win:
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(SYNCER_BINARY_WIN) -v ./cmd/songe-syncer
+
+build-syncer-linux:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(SYNCER_BINARY_NAME) -v ./cmd/songe-syncer
+
+build-syncer-mac:
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) $(BUILD_FLAGS) -o ./$(OUTPUT)/$(SYNCER_BINARY_MAC) -v ./cmd/songe-syncer
+
 clean:
 	$(GOCLEAN)
 	rm -rf $(OUTPUT)
@@ -58,3 +72,5 @@ deps:
 	$(GOGET) github.com/TomOnTime/utfutil
 	$(GOGET) github.com/ttacon/chalk
 	$(GOGET) github.com/otiai10/copy
+	$(GOGET) golang.org/x/sys/...
+	$(GOGET) github.com/fsnotify/fsnotify
