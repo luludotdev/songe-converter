@@ -6,8 +6,9 @@ import (
 )
 
 var (
-	sha1ver = "unknown"
-	gitTag  string
+	sha1ver   = "unknown"
+	gitTag    string
+	buildTime string
 
 	printVer bool
 )
@@ -34,6 +35,10 @@ func printVersionInfo() {
 	addRow("Version", version)
 	addRow("Git Hash", sha1ver)
 	addRow("Go Version", runtime.Version())
+
+	if buildTime != "" {
+		addRow("Build Time", buildTime)
+	}
 
 	var widest int
 	for _, r := range versionRows {

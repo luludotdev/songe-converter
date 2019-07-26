@@ -7,8 +7,9 @@ GOGET=$(GOCMD) get
 
 GIT_HASH=`git rev-parse HEAD`
 GIT_TAG=`git tag --points-at HEAD`
+BUILD_TIME=`date +%Y-%m-%dT%T%z`
 OUTPUT=build
-BUILD_FLAGS=-ldflags="-s -w -X main.sha1ver=$(GIT_HASH) -X main.gitTag=$(GIT_TAG)"
+BUILD_FLAGS=-ldflags="-s -w -X main.sha1ver=$(GIT_HASH) -X main.gitTag=$(GIT_TAG) -X main.buildTime=$(BUILD_TIME)"
 
 SONGE_BINARY_NAME=songe-converter
 SONGE_BINARY_WIN=$(SONGE_BINARY_NAME).exe
