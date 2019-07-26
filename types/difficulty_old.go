@@ -10,7 +10,7 @@ type OldDifficultyJSON struct {
 	BeatsPerBar    int     `json:"_beatsPerBar"`
 
 	NoteJumpSpeed           float64 `json:"_noteJumpSpeed"`
-	NoteJumpStartBeatOffset int     `json:"_noteJumpStartBeatOffset"`
+	NoteJumpStartBeatOffset float64 `json:"_noteJumpStartBeatOffset"`
 
 	Shuffle       float64 `json:"_shuffle"`
 	ShufflePeriod float64 `json:"_shufflePeriod"`

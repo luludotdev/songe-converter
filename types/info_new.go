@@ -61,7 +61,7 @@ type DifficultyBeatmap struct {
 	BeatmapFilename string `json:"_beatmapFilename"`
 
 	NoteJumpMovementSpeed   float64 `json:"_noteJumpMovementSpeed"`
-	NoteJumpStartBeatOffset int     `json:"_noteJumpStartBeatOffset"`
+	NoteJumpStartBeatOffset float64 `json:"_noteJumpStartBeatOffset"`
 
 	CustomData BeatmapCustomData `json:"_customData"`
 
