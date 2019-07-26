@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -18,10 +17,6 @@ import (
 )
 
 var (
-	sha1ver = "unknown"
-	gitTag  string
-
-	printVer  bool
 	printHelp bool
 
 	concurrency = uint(runtime.NumCPU())
@@ -55,12 +50,8 @@ func main() {
 	}
 
 	if printVer == true {
-		if gitTag != "" {
-			fmt.Println(gitTag)
-		}
-
-		fmt.Println(sha1ver)
-		return
+		printVersionInfo()
+		os.Exit(0)
 	}
 
 	if printHelp == true {
