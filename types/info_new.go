@@ -1,4 +1,6 @@
-package main
+package types
+
+import "github.com/lolPants/songe-converter/json"
 
 // NewInfoJSON New Info JSON
 type NewInfoJSON struct {
@@ -17,6 +19,7 @@ type NewInfoJSON struct {
 	PreviewStartTime float64 `json:"_previewStartTime"`
 	PreviewDuration  float64 `json:"_previewDuration"`
 
+	OldSongFilename    string `json:"-"`
 	SongFilename       string `json:"_songFilename"`
 	CoverImageFilename string `json:"_coverImageFilename"`
 
@@ -25,6 +28,8 @@ type NewInfoJSON struct {
 	CustomData InfoCustomData `json:"_customData"`
 
 	DifficultyBeatmapSets []DifficultyBeatmapSet `json:"_difficultyBeatmapSets"`
+
+	Hash string `json:"-"`
 }
 
 // InfoCustomData Custom JSON Data for root info.json
@@ -56,11 +61,11 @@ type DifficultyBeatmap struct {
 	BeatmapFilename string `json:"_beatmapFilename"`
 
 	NoteJumpMovementSpeed   float64 `json:"_noteJumpMovementSpeed"`
-	NoteJumpStartBeatOffset int     `json:"_noteJumpStartBeatOffset"`
+	NoteJumpStartBeatOffset float64 `json:"_noteJumpStartBeatOffset"`
 
 	CustomData BeatmapCustomData `json:"_customData"`
 
-	Bytes []byte `json:"-"`
+	DiffJSON *NewDifficultyJSON `json:"-"`
 }
 
 // BeatmapCustomData Custom JSON Data for a DifficultyBeatmap
@@ -83,4 +88,9 @@ type BeatmapCustomData struct {
 type DifficultyBeatmapSet struct {
 	BeatmapCharacteristicName string              `json:"_beatmapCharacteristicName"`
 	DifficultyBeatmaps        []DifficultyBeatmap `json:"_difficultyBeatmaps"`
+}
+
+// Bytes Convert to byte array
+func (i NewInfoJSON) Bytes() ([]byte, error) {
+	return json.MarshalPretty(i)
 }

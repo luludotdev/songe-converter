@@ -1,6 +1,11 @@
-package main
+package utils
 
-func checkForMapExt(diff *OldDifficultyJSON) bool {
+import (
+	"github.com/lolPants/songe-converter/types"
+)
+
+// NeedsMappingExtensions Checks for mapping extensions requirement
+func NeedsMappingExtensions(diff *types.OldDifficultyJSON) bool {
 	for _, note := range diff.Notes {
 		if note.LineLayer >= 1000 || note.LineLayer <= -1000 {
 			return true
