@@ -7,12 +7,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/lolPants/songe-converter/utils"
-
 	"github.com/bep/debounce"
 	"github.com/fsnotify/fsnotify"
 	"github.com/lolPants/songe-converter/directory"
 	"github.com/lolPants/songe-converter/flags"
+	"github.com/lolPants/songe-converter/utils"
 )
 
 var (
@@ -64,6 +63,7 @@ func main() {
 		}
 	}
 
+	outputDir = utils.StripQuotes(outputDir)
 	outputExists, err := utils.DirectoryExists(outputDir)
 	if err != nil || outputExists == false {
 		fmt.Println("Output directory does not exist!")
