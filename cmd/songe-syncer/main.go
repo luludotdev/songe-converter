@@ -3,8 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/bep/debounce"
@@ -53,13 +55,37 @@ func main() {
 		exit(1)
 	}
 
+	var cacheFile string
+	var cachedPath string
+	dataDir, err := utils.DataDir("songe-syncer")
+	if err == nil && dataDir != "" {
+		if exists, _ := utils.DirectoryExists(dataDir); exists == false {
+			os.MkdirAll(dataDir, 0755)
+		}
+
+		cacheFile = filepath.Join(dataDir, "path.cache")
+		bytes, err := ioutil.ReadFile(cacheFile)
+
+		if err == nil {
+			cachedPath = string(bytes)
+		}
+	}
+
 	if outputDir == "" {
 		fmt.Println("Input path to CustomLevels / CustomWIPLevels folder:")
+		if cachedPath != "" {
+			fmt.Printf("Detected previous path: \"%s\"\n", cachedPath)
+			fmt.Print("Press ENTER to use this path\n\n")
+		}
+
 		fmt.Print("> ")
 
 		scanner := bufio.NewScanner(os.Stdin)
 		if scanner.Scan() {
 			outputDir = scanner.Text()
+			if outputDir == "" && cachedPath != "" {
+				outputDir = cachedPath
+			}
 		}
 	}
 
@@ -79,6 +105,13 @@ func main() {
 	if err != nil {
 		fmt.Println("Could not watch this folder for changes!")
 		exit(1)
+	}
+
+	if cacheFile != "" {
+		err = ioutil.WriteFile(cacheFile, []byte(outputDir), 0644)
+		if err != nil {
+			log.Print(err)
+		}
 	}
 
 	defer watcher.Close()
