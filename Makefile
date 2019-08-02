@@ -75,3 +75,4 @@ deps:
 	$(GOGET) github.com/otiai10/copy
 	$(GOGET) golang.org/x/sys/...
 	$(GOGET) github.com/fsnotify/fsnotify
+	$(GOGET) github.com/mitchellh/go-homedir
