@@ -70,6 +70,11 @@ func main() {
 		exit(1)
 	}
 
+	if outputDir == dir {
+		fmt.Println("Output directory cannot be the same as the input directory!")
+		exit(0)
+	}
+
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		fmt.Println("Could not watch this folder for changes!")
