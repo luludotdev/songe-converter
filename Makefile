@@ -3,7 +3,6 @@ GOCMD=go
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
-GOGET=$(GOCMD) get
 
 GIT_HASH=`git rev-parse HEAD`
 GIT_TAG=`git tag --points-at HEAD`
@@ -67,12 +66,3 @@ release:
 	git push --tags && \
 	make clean && \
 	make
-
-deps:
-	$(GOGET) github.com/bmatcuk/doublestar
-	$(GOGET) github.com/TomOnTime/utfutil
-	$(GOGET) github.com/ttacon/chalk
-	$(GOGET) github.com/otiai10/copy
-	$(GOGET) golang.org/x/sys/...
-	$(GOGET) github.com/fsnotify/fsnotify
-	$(GOGET) github.com/mitchellh/go-homedir
