@@ -2,7 +2,8 @@ package json
 
 import (
 	"bytes"
-	"encoding/json"
+
+	"github.com/clarketm/json"
 )
 
 // Marshal Properly Serialize JSON
