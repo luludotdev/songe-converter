@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/lolPants/songe-converter/types"
+	"jackbaron.com/songe-converter/v2/types"
 )
 
 // NeedsMappingExtensions Checks for mapping extensions requirement

@@ -6,9 +6,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/lolPants/songe-converter/converter"
-	"github.com/lolPants/songe-converter/utils"
 	"github.com/otiai10/copy"
+
+	"jackbaron.com/songe-converter/v2/converter"
+	"jackbaron.com/songe-converter/v2/utils"
 )
 
 func processDir() {

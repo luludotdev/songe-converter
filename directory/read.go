@@ -4,7 +4,7 @@ import (
 	"errors"
 	"path/filepath"
 
-	"github.com/lolPants/songe-converter/utils"
+	"jackbaron.com/songe-converter/v2/utils"
 )
 
 // ReadType reads a directory and returns its type

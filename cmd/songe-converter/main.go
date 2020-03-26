@@ -9,11 +9,12 @@ import (
 
 	"github.com/bmatcuk/doublestar"
 	"github.com/briandowns/spinner"
-	"github.com/lolPants/songe-converter/converter"
-	"github.com/lolPants/songe-converter/flags"
-	"github.com/lolPants/songe-converter/log"
-	"github.com/lolPants/songe-converter/utils"
 	"github.com/ttacon/chalk"
+
+	"jackbaron.com/songe-converter/v2/converter"
+	"jackbaron.com/songe-converter/v2/flags"
+	"jackbaron.com/songe-converter/v2/log"
+	"jackbaron.com/songe-converter/v2/utils"
 )
 
 var (

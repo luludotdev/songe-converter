@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	j "github.com/lolPants/songe-converter/json"
-	"github.com/lolPants/songe-converter/types"
+	j "jackbaron.com/songe-converter/v2/json"
+	"jackbaron.com/songe-converter/v2/types"
 )
 
 // LoadNewInfo Loads new info struct from byte array

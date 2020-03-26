@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/lolPants/songe-converter/converter"
-	"github.com/lolPants/songe-converter/directory"
 	"github.com/otiai10/copy"
+
+	"jackbaron.com/songe-converter/v2/converter"
+	"jackbaron.com/songe-converter/v2/directory"
 )
 
 func main() {

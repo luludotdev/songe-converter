@@ -11,9 +11,10 @@ import (
 
 	"github.com/bep/debounce"
 	"github.com/fsnotify/fsnotify"
-	"github.com/lolPants/songe-converter/directory"
-	"github.com/lolPants/songe-converter/flags"
-	"github.com/lolPants/songe-converter/utils"
+
+	"jackbaron.com/songe-converter/v2/directory"
+	"jackbaron.com/songe-converter/v2/flags"
+	"jackbaron.com/songe-converter/v2/utils"
 )
 
 var (

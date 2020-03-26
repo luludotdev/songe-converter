@@ -8,9 +8,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/lolPants/songe-converter/directory"
-	"github.com/lolPants/songe-converter/types"
-	"github.com/lolPants/songe-converter/utils"
+	"jackbaron.com/songe-converter/v2/directory"
+	"jackbaron.com/songe-converter/v2/types"
+	"jackbaron.com/songe-converter/v2/utils"
 )
 
 // OldToNew converts the old format to the new format

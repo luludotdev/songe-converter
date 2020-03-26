@@ -1,6 +1,6 @@
 package types
 
-import "github.com/lolPants/songe-converter/json"
+import "jackbaron.com/songe-converter/v2/json"
 
 // OldDifficultyJSON is the old beatmap difficulty file
 type OldDifficultyJSON struct {

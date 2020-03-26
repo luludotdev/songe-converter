@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/lolPants/songe-converter/json"
+	"jackbaron.com/songe-converter/v2/json"
 )
 
 // OldInfoJSON is the old beatmap info file

@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/lolPants/songe-converter/directory"
-	"github.com/lolPants/songe-converter/types"
-	"github.com/lolPants/songe-converter/utils"
+	"jackbaron.com/songe-converter/v2/directory"
+	"jackbaron.com/songe-converter/v2/types"
+	"jackbaron.com/songe-converter/v2/utils"
 )
 
 // NewToOld converts the new format back to the old format
