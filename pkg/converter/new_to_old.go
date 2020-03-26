@@ -173,7 +173,7 @@ func DirNewToOld(dir string, dryRun bool, keepFiles bool) Result {
 
 		ioutil.WriteFile(oldPath, oldBytes, 0644)
 		if keepFiles == false {
-			infoPath := filepath.Join(dir, "info.dat")
+			infoPath := filepath.Join(dir, "Info.dat")
 			err := os.Remove(infoPath)
 
 			if err != nil {

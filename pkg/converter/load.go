@@ -12,7 +12,7 @@ import (
 func LoadNewInfo(bytes []byte) (*types.NewInfoJSON, error) {
 	valid := json.Valid(bytes)
 	if valid == false {
-		return nil, errors.New("invalid info.dat")
+		return nil, errors.New("invalid Info.dat")
 	}
 
 	var infoJSON types.NewInfoJSON

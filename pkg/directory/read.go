@@ -16,8 +16,12 @@ func ReadType(path string) (Type, error) {
 		return None, errors.New("directory does not exist")
 	}
 
-	datPath := filepath.Join(path, "info.dat")
-	datExists, _ := utils.FileExists(datPath)
+	datUpperPath := filepath.Join(path, "Info.dat")
+	datLowerPath := filepath.Join(path, "info.dat")
+
+	datUpperExists, _ := utils.FileExists(datUpperPath)
+	datLowerExists, _ := utils.FileExists(datLowerPath)
+	datExists := datUpperExists || datLowerExists
 
 	jsonPath := filepath.Join(path, "info.json")
 	jsonExists, _ := utils.FileExists(jsonPath)

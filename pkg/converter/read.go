@@ -20,10 +20,14 @@ func ReadDirectoryNew(path string) (*types.NewInfoJSON, error) {
 
 	hashBytes := make([]byte, 0)
 
-	infoPath := filepath.Join(path, "info.dat")
+	infoPath := filepath.Join(path, "Info.dat")
+	infoPathAlt := filepath.Join(path, "info.dat")
 	bytes, err := utfutil.ReadFile(infoPath, utfutil.UTF8)
 	if err != nil {
-		return nil, err
+		bytes, err = utfutil.ReadFile(infoPathAlt, utfutil.UTF8)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	hashBytes = append(hashBytes, bytes...)

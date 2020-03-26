@@ -220,7 +220,7 @@ func DirOldToNew(dir string, dryRun bool, keepFiles bool) Result {
 	r.NewHash = new.Hash
 
 	if dryRun == false {
-		newPath := filepath.Join(dir, "info.dat")
+		newPath := filepath.Join(dir, "Info.dat")
 		newBytes, err := new.Bytes()
 		if err != nil {
 			r.Error = errors.New("could not serialize \"" + newPath + "\"")
