@@ -6,11 +6,19 @@ import "jackbaron.com/songe-converter/v2/pkg/json"
 type NewDifficultyJSON struct {
 	Version string `json:"_version"`
 
-	BPMChanges []BPMChange `json:"_BPMChanges"`
-	Events     []Event     `json:"_events"`
-	Notes      []Note      `json:"_notes"`
-	Obstacles  []Obstacle  `json:"_obstacles"`
-	Bookmarks  []Bookmark  `json:"_bookmarks"`
+	Events    []Event    `json:"_events"`
+	Notes     []Note     `json:"_notes"`
+	Obstacles []Obstacle `json:"_obstacles"`
+
+	CustomData NewDifficultyCustomData `json:"_customData,omitempty"`
+}
+
+// NewDifficultyCustomData is the custom data of new beatmap difficulties
+type NewDifficultyCustomData struct {
+	BPMChanges []BPMChange `json:"_BPMChanges,omitempty"`
+	Bookmarks  []Bookmark  `json:"_bookmarks,omitempty"`
+
+	Time int `json:"_time,omitempty"`
 }
 
 // Bytes Convert to byte array

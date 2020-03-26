@@ -25,7 +25,7 @@ type NewInfoJSON struct {
 
 	EnvironmentName string `json:"_environmentName"`
 
-	CustomData InfoCustomData `json:"_customData"`
+	CustomData InfoCustomData `json:"_customData,omitempty"`
 
 	DifficultyBeatmapSets []DifficultyBeatmapSet `json:"_difficultyBeatmapSets"`
 
@@ -34,10 +34,10 @@ type NewInfoJSON struct {
 
 // InfoCustomData Custom JSON Data for root info.json
 type InfoCustomData struct {
-	Contributors []Contributor `json:"_contributors"`
+	Contributors []Contributor `json:"_contributors,omitempty"`
 
-	CustomEnvironment     string `json:"_customEnvironment"`
-	CustomEnvironmentHash string `json:"_customEnvironmentHash"`
+	CustomEnvironment     string `json:"_customEnvironment,omitempty"`
+	CustomEnvironmentHash string `json:"_customEnvironmentHash,omitempty"`
 }
 
 // Contributor New Info JSON Contributors
@@ -63,25 +63,25 @@ type DifficultyBeatmap struct {
 	NoteJumpMovementSpeed   float64 `json:"_noteJumpMovementSpeed"`
 	NoteJumpStartBeatOffset float64 `json:"_noteJumpStartBeatOffset"`
 
-	CustomData BeatmapCustomData `json:"_customData"`
+	CustomData BeatmapCustomData `json:"_customData,omitempty"`
 
 	DiffJSON *NewDifficultyJSON `json:"-"`
 }
 
 // BeatmapCustomData Custom JSON Data for a DifficultyBeatmap
 type BeatmapCustomData struct {
-	DifficultyLabel string `json:"_difficultyLabel"`
+	DifficultyLabel string `json:"_difficultyLabel,omitempty"`
 
-	EditorOffset    int `json:"_editorOffset"`
-	EditorOldOffset int `json:"_editorOldOffset"`
+	EditorOffset    int `json:"_editorOffset,omitempty"`
+	EditorOldOffset int `json:"_editorOldOffset,omitempty"`
 
 	ColorLeft  *BeatmapColor `json:"_colorLeft,omitempty"`
 	ColorRight *BeatmapColor `json:"_colorRight,omitempty"`
 
-	Warnings     []string `json:"_warnings"`
-	Information  []string `json:"_information"`
-	Suggestions  []string `json:"_suggestions"`
-	Requirements []string `json:"_requirements"`
+	Warnings     []string `json:"_warnings,omitempty"`
+	Information  []string `json:"_information,omitempty"`
+	Suggestions  []string `json:"_suggestions,omitempty"`
+	Requirements []string `json:"_requirements,omitempty"`
 }
 
 // DifficultyBeatmapSet Set of DifficultyBeatmap structs

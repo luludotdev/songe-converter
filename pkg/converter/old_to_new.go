@@ -23,10 +23,10 @@ func OldToNew(old *types.OldInfoJSON) (*types.NewInfoJSON, error) {
 	new.SongAuthorName = old.SongSubName
 	new.LevelAuthorName = old.AuthorName
 
-	new.CustomData.Contributors = make([]types.Contributor, 0)
 	for _, c := range old.Contributors {
 		contributor := types.Contributor{Role: c.Role, Name: c.Name, IconPath: c.IconPath}
 		new.CustomData.Contributors = append(new.CustomData.Contributors, contributor)
+		new.CustomData.Contributors = make([]types.Contributor, 0)
 	}
 
 	new.BeatsPerMinute = old.BeatsPerMinute
@@ -126,15 +126,13 @@ func OldToNew(old *types.OldInfoJSON) (*types.NewInfoJSON, error) {
 		var newDiffJSON types.NewDifficultyJSON
 		newDiffJSON.Version = "2.0.0"
 
-		newDiffJSON.BPMChanges = diff.DiffJSON.BPMChanges
 		newDiffJSON.Events = diff.DiffJSON.Events
 		newDiffJSON.Notes = diff.DiffJSON.Notes
 		newDiffJSON.Obstacles = diff.DiffJSON.Obstacles
-		newDiffJSON.Bookmarks = diff.DiffJSON.Bookmarks
 
-		if newDiffJSON.BPMChanges == nil {
-			newDiffJSON.BPMChanges = make([]types.BPMChange, 0)
-		}
+		newDiffJSON.CustomData.BPMChanges = diff.DiffJSON.BPMChanges
+		newDiffJSON.CustomData.Bookmarks = diff.DiffJSON.Bookmarks
+		newDiffJSON.CustomData.Time = diff.DiffJSON.Time
 
 		if newDiffJSON.Events == nil {
 			newDiffJSON.Events = make([]types.Event, 0)
@@ -148,8 +146,12 @@ func OldToNew(old *types.OldInfoJSON) (*types.NewInfoJSON, error) {
 			newDiffJSON.Obstacles = make([]types.Obstacle, 0)
 		}
 
-		if newDiffJSON.Bookmarks == nil {
-			newDiffJSON.Bookmarks = make([]types.Bookmark, 0)
+		if newDiffJSON.CustomData.BPMChanges == nil {
+			newDiffJSON.CustomData.BPMChanges = make([]types.BPMChange, 0)
+		}
+
+		if newDiffJSON.CustomData.Bookmarks == nil {
+			newDiffJSON.CustomData.Bookmarks = make([]types.Bookmark, 0)
 		}
 
 		difficulty.DiffJSON = &newDiffJSON

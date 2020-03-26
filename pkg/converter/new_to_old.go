@@ -92,11 +92,12 @@ func NewToOld(new *types.NewInfoJSON) (*types.OldInfoJSON, error) {
 				diffJSON.Requirements = make([]string, 0)
 			}
 
-			diffJSON.BPMChanges = diff.DiffJSON.BPMChanges
 			diffJSON.Events = diff.DiffJSON.Events
 			diffJSON.Notes = diff.DiffJSON.Notes
 			diffJSON.Obstacles = diff.DiffJSON.Obstacles
-			diffJSON.Bookmarks = diff.DiffJSON.Bookmarks
+
+			diffJSON.BPMChanges = diff.DiffJSON.CustomData.BPMChanges
+			diffJSON.Bookmarks = diff.DiffJSON.CustomData.Bookmarks
 
 			if diffJSON.BPMChanges == nil {
 				diffJSON.BPMChanges = make([]types.BPMChange, 0)
