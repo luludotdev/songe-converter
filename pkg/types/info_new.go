@@ -1,6 +1,6 @@
 package types
 
-import "jackbaron.com/songe-converter/v2/json"
+import "jackbaron.com/songe-converter/v2/pkg/json"
 
 // NewInfoJSON New Info JSON
 type NewInfoJSON struct {

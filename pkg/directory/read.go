@@ -4,7 +4,7 @@ import (
 	"errors"
 	"path/filepath"
 
-	"jackbaron.com/songe-converter/v2/utils"
+	"jackbaron.com/songe-converter/v2/pkg/utils"
 )
 
 // ReadType reads a directory and returns its type

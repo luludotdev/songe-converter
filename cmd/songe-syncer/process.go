@@ -8,8 +8,8 @@ import (
 
 	"github.com/otiai10/copy"
 
-	"jackbaron.com/songe-converter/v2/converter"
-	"jackbaron.com/songe-converter/v2/utils"
+	"jackbaron.com/songe-converter/v2/pkg/converter"
+	"jackbaron.com/songe-converter/v2/pkg/utils"
 )
 
 func processDir() {

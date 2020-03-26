@@ -8,9 +8,9 @@ import (
 	"sort"
 	"strings"
 
-	"jackbaron.com/songe-converter/v2/directory"
-	"jackbaron.com/songe-converter/v2/types"
-	"jackbaron.com/songe-converter/v2/utils"
+	"jackbaron.com/songe-converter/v2/pkg/directory"
+	"jackbaron.com/songe-converter/v2/pkg/types"
+	"jackbaron.com/songe-converter/v2/pkg/utils"
 )
 
 // OldToNew converts the old format to the new format

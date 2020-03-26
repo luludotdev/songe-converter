@@ -1,6 +1,6 @@
 package types
 
-import "jackbaron.com/songe-converter/v2/json"
+import "jackbaron.com/songe-converter/v2/pkg/json"
 
 // NewDifficultyJSON is the new beatmap difficulty file
 type NewDifficultyJSON struct {

@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"jackbaron.com/songe-converter/v2/types"
+	"jackbaron.com/songe-converter/v2/pkg/types"
 )
 
 // NeedsMappingExtensions Checks for mapping extensions requirement

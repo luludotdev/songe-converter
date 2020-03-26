@@ -11,10 +11,10 @@ import (
 	"github.com/briandowns/spinner"
 	"github.com/ttacon/chalk"
 
-	"jackbaron.com/songe-converter/v2/converter"
-	"jackbaron.com/songe-converter/v2/flags"
-	"jackbaron.com/songe-converter/v2/log"
-	"jackbaron.com/songe-converter/v2/utils"
+	"jackbaron.com/songe-converter/v2/pkg/converter"
+	"jackbaron.com/songe-converter/v2/pkg/flags"
+	"jackbaron.com/songe-converter/v2/pkg/log"
+	"jackbaron.com/songe-converter/v2/pkg/utils"
 )
 
 var (

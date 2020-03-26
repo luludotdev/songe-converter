@@ -7,8 +7,8 @@ import (
 
 	"github.com/otiai10/copy"
 
-	"jackbaron.com/songe-converter/v2/converter"
-	"jackbaron.com/songe-converter/v2/directory"
+	"jackbaron.com/songe-converter/v2/pkg/converter"
+	"jackbaron.com/songe-converter/v2/pkg/directory"
 )
 
 func main() {

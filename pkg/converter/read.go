@@ -6,9 +6,9 @@ import (
 
 	"github.com/TomOnTime/utfutil"
 
-	"jackbaron.com/songe-converter/v2/directory"
-	"jackbaron.com/songe-converter/v2/types"
-	"jackbaron.com/songe-converter/v2/utils"
+	"jackbaron.com/songe-converter/v2/pkg/directory"
+	"jackbaron.com/songe-converter/v2/pkg/types"
+	"jackbaron.com/songe-converter/v2/pkg/utils"
 )
 
 // ReadDirectoryNew Reads a directory and loads new beatmap format
