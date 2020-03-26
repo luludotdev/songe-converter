@@ -11,9 +11,9 @@ import (
 
 	"github.com/bep/debounce"
 	"github.com/fsnotify/fsnotify"
+	"github.com/lolPants/flaggs"
 
 	"jackbaron.com/songe-converter/v2/pkg/directory"
-	"jackbaron.com/songe-converter/v2/pkg/flags"
 	"jackbaron.com/songe-converter/v2/pkg/utils"
 )
 
@@ -33,11 +33,11 @@ func main() {
 		exit(1)
 	}
 
-	flags.SetDetails("Songe Syncer "+gitTag, "https://github.com/lolPants/songe-converter")
-	flags.SetExample("./songe-syncer")
-	flags.RegisterBoolFlag(&printVer, "v", "version", "print version information")
-	flags.RegisterStringFlag(&outputDir, "o", "output", "output directory")
-	flags.Parse(&args)
+	flaggs.SetDetails("Songe Syncer "+gitTag, "https://github.com/lolPants/songe-converter")
+	flaggs.SetExample("./songe-syncer")
+	flaggs.RegisterBoolFlag(&printVer, "v", "version", "print version information")
+	flaggs.RegisterStringFlag(&outputDir, "o", "output", "output directory")
+	flaggs.Parse(&args)
 
 	if printVer == true {
 		printVersionInfo()
@@ -45,7 +45,7 @@ func main() {
 	}
 
 	if printHelp == true {
-		flags.PrintUsageAndExit()
+		flaggs.PrintUsageAndExit()
 		return
 	}
 

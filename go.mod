@@ -8,7 +8,7 @@ require (
 	github.com/bmatcuk/doublestar v1.2.2
 	github.com/briandowns/spinner v1.10.0
 	github.com/fsnotify/fsnotify v1.4.9
-	github.com/lolPants/songe-converter v2.1.0+incompatible
+	github.com/lolPants/flaggs v0.0.0-20190728002823-c3de08aa0dc4
 	github.com/malexdev/utfutil v0.0.0-20180510171754-00c8d4a8e7a8 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/otiai10/copy v1.1.1

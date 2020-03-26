@@ -9,10 +9,10 @@ import (
 
 	"github.com/bmatcuk/doublestar"
 	"github.com/briandowns/spinner"
+	"github.com/lolPants/flaggs"
 	"github.com/ttacon/chalk"
 
 	"jackbaron.com/songe-converter/v2/pkg/converter"
-	"jackbaron.com/songe-converter/v2/pkg/flags"
 	"jackbaron.com/songe-converter/v2/pkg/log"
 	"jackbaron.com/songe-converter/v2/pkg/utils"
 )
@@ -32,21 +32,21 @@ var (
 )
 
 func main() {
-	flags.SetDetails("Songe Converter "+gitTag, "https://github.com/lolPants/songe-converter")
-	flags.SetExample("./songe-converter -g '**/info.json' ./CustomSongs")
+	flaggs.SetDetails("Songe Converter "+gitTag, "https://github.com/lolPants/songe-converter")
+	flaggs.SetExample("./songe-converter -g '**/info.json' ./CustomSongs")
 
-	flags.RegisterBoolFlag(&printVer, "v", "version", "Print version information.")
-	flags.RegisterUintFlag(&concurrency, "c", "concurrency", "Max number of jobs allowed to run at a time.")
-	flags.RegisterStringFlag(&output, "o", "output", "Save converted hashes to file.")
-	flags.RegisterStringFlag(&outputErr, "e", "error-out", "Save conversion errors to file.")
-	flags.RegisterStringFlag(&glob, "g", "glob", "Use a glob to match directories.")
-	flags.RegisterBoolFlag(&allDirs, "a", "all-dirs", "Run on all subfolders of given directory.")
-	flags.RegisterBoolFlag(&keepFiles, "k", "keep-original", "Do not delete original JSON files")
-	flags.RegisterBoolFlag(&dryRun, "d", "dry-run", "Do not modify filesystem, only log output.")
-	flags.Parse(&args)
+	flaggs.RegisterBoolFlag(&printVer, "v", "version", "Print version information.")
+	flaggs.RegisterUintFlag(&concurrency, "c", "concurrency", "Max number of jobs allowed to run at a time.")
+	flaggs.RegisterStringFlag(&output, "o", "output", "Save converted hashes to file.")
+	flaggs.RegisterStringFlag(&outputErr, "e", "error-out", "Save conversion errors to file.")
+	flaggs.RegisterStringFlag(&glob, "g", "glob", "Use a glob to match directories.")
+	flaggs.RegisterBoolFlag(&allDirs, "a", "all-dirs", "Run on all subfolders of given directory.")
+	flaggs.RegisterBoolFlag(&keepFiles, "k", "keep-original", "Do not delete original JSON files")
+	flaggs.RegisterBoolFlag(&dryRun, "d", "dry-run", "Do not modify filesystem, only log output.")
+	flaggs.Parse(&args)
 
 	if len(os.Args[1:]) == 0 {
-		flags.PrintUsageAndExit()
+		flaggs.PrintUsageAndExit()
 		return
 	}
 
@@ -56,7 +56,7 @@ func main() {
 	}
 
 	if printHelp == true {
-		flags.PrintUsageAndExit()
+		flaggs.PrintUsageAndExit()
 		return
 	}
 
